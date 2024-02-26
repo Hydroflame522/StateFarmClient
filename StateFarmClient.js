@@ -3255,6 +3255,9 @@ z-index: 999999;
             //skins
             match = js.match(/inventory\[[a-zA-Z$_]+\].id===[a-zA-Z$_]+.id\)return!0;return!1/);
             if (match) {modifyJS(match[0], match[0] + `||window.${functionNames.getSkinHack}()`)};
+            // anti adblock disabler (passive, always on)
+            modifyJS(/checkAdBlocker\(\)\{(.*?)\}adBlockerDetected\(\)\{(.*?)\}/, 'checkAdBlocker(){false}adBlockerDetected(){false}');
+            modifyJS(/showAdBlockerVideo\(\)\{(.*?)1e4\)\}/, 'showAdBlockerVideo(){this.afterVideoAdComplete()}');
             //reset join/leave msgs
             modifyJS(',console.log("joinGame()',',window.'+functionNames.setNewGame+'(),console.log("value changed, also joinGame()');
             //bypass chat filter
