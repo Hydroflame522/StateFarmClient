@@ -102,8 +102,8 @@ console.log("StateFarm: running (before function)");
     console.log("StateFarm: running (after function)");
     //script info
     const name="ЅtateFarm Client";
-    const version=GM_info.script.version;
-    const menuTitle=name + " v" + version;
+    const version=GM_info?.script?.version;
+    const menuTitle=name + (version ? " v" + version : '');
     //startup sequence
     const startUp=function () {
         console.log("StateFarm: detectURLParams()");
@@ -2317,7 +2317,7 @@ z-index: 999999;
                 favicon.type = 'image/x-icon';
                 favicon.rel = 'shortcut icon';
                 if (extract("titleAnimation")) {
-                    favicon.href = GM_info.script.icon;
+                    favicon.href = GM_info?.script?.icon || 'https://raw.githubusercontent.com/Hydroflame522/StateFarmClient/main/icons/StateFarmClientLogo384px.png';
                 } else {
                     favicon.href = 'https://www.google.com/s2/favicons?domain=shellshock.io';
                 };
