@@ -3408,23 +3408,20 @@ z-index: 999999;
             const DEATHARGS = new RegExp('function '+f(H._deathFunction)+'\\(([a-zA-Z$_]+,[a-zA-Z$_]+)\\)').exec(js)[1];
             console.log("DEATHARGS",DEATHARGS);
             modifyJS('function '+f(H._deathFunction)+'('+DEATHARGS+'){','function '+f(H._deathFunction)+'('+f(DEATHARGS)+'){window.'+functionNames.interceptDeath+'('+f(DEATHARGS)+');');
-            //vip spoof/no ads credit absolutely goes to OakSwingZZZ
-            modifyJS('adsBlocked=t', 'adsBlocked='+functionNames.adBlocker+'("adsBlocked")');
+            // vip spoof & ad removal (credit to oakswing)
+            modifyJS('{this.adsBlocked=' + match[1], '{this.adsBlocked='+functionNames.adBlocker+'("adsBlocked")');
             modifyJS('"user-has-adblock"', functionNames.adBlocker+'("user-has-adblock")');
             modifyJS('layed=!1', 'layed=window.'+functionNames.adBlocker+'(!1)');
             modifyJS(H.USERDATA+'.playerAccount.isUpgraded()', functionNames.adBlocker+'('+f(H.USERDATA)+'.playerAccount.isUpgraded())');
             //Modifies matchmaker JS to block gamecodes.
             match = js.match(/ion,([a-zA-Z$_]+)\(([a-zA-Z$_]+)/);
-            if (match) {
-                modifyJS('region,', `region,window.${functionNames.gameBlacklisted}(${match[2]})?(${match[2]}.uuid="${getScrambled()}",${match[1]}(${match[2]}),vueApp.hideSpinner()):`);
-            };
+            if (match) modifyJS('region,', `region,window.${functionNames.gameBlacklisted}(${match[2]})?(${match[2]}.uuid="${getScrambled()}",${match[1]}(${match[2]}),vueApp.hideSpinner()):`);
             //intercept and replace audio
             match = js.match(/static play\(([a-zA-Z$_,]+)\){/);
             console.log("AUDIO INTERCEPTION", match);
             modifyJS(match[0], `${match[0]}[${match[1]}] = window.${functionNames.interceptAudio}(${match[1]});`);
 
             modifyJS('console.log("startShellShockers"),', `console.log("STATEFARM ACTIVE!"),`);
-            modifyJS(/tp-/g,'');
 
             console.log(H);
             console.log(js);
