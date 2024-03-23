@@ -1,4 +1,4 @@
-﻿<img src='./icons/shell-logo-replacement.png' width='80%'>
+<div align='center'>﻿<img src='./icons/shell-logo-replacement.png' width='80%'></div>
 <h1 align='center'>StateFarm Client</h1>
 <h3 align='center'>for Shell Shockers</h3>
 <br><br>
