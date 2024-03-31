@@ -25,7 +25,7 @@
     //3.#.#-release for release
 //this ensures that each version of the script is counted as different
 
-// @version      3.4.1-pre9
+// @version      3.4.1-pre10
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.shell.onlypuppy7.online/*
@@ -164,10 +164,6 @@ console.log("StateFarm: running (before function)");
     const presetStorageLocation = "StateFarmUserPresets";
     let hudElementPositions = {};
     let blacklistedGameCodes = [];
-    let sfChatIframe;
-    let sfChatContainer;
-    let sfChatUsername;
-    let presetIgnore = ['sfChatUsername', 'otherSettingYouMightWantNotToBeExported'];
     const storageKey = "StateFarm_" + (unsafeWindow.document.location.host.replaceAll(".", "")) + "_";
     console.log("Save key:", storageKey);
     let binding = false;
@@ -445,7 +441,7 @@ console.log("StateFarm: running (before function)");
                                 popupText = "Toggled StateFarm Panel"; break;
                             case ("showBotPanel"):
                                 popupText = "Toggled Bot Panel"; break;
-                            case ("sfChatShowHide"):
+                            case ("openChat"):
                                 popupText = "Toggled SFC Chat"; break;
                             case ("panic"):
                                 popupText = "Exiting to set URL..."; break;
@@ -456,31 +452,13 @@ console.log("StateFarm: running (before function)");
             });
         };
     });
-    const initTabs = function (tab, guideData) {
+    const initTabs = function (tab) {
         tp[tab.storeAs] = tab.location.addTab({
             pages: [
                 { title: 'Modules' },
-                { title: 'Binds' },
-                { title: 'Guide' },
+                { title: 'Binds' }
             ],
         });
-        if (guideData) {
-            const thePages = [];
-            guideData.forEach(aPage => {
-                thePages.push({ title: aPage.title });
-            });
-            tp[tab.storeAs + "Guide"] = tp[tab.storeAs].pages[2].addTab({ pages: thePages }); //is there a one liner for this? uhhh probabyl
-            //tp[tab.storeAs + "Guide"] = tab.location.addTab({ thePages: guideData.map(page => ({ title: page.title })) });
-            for (let i = 0; i < guideData.length; i++) {
-                const storeAs = tab.storeAs + "Guide" + i;
-                const text = (guideData[i].content || "Not set up correctly lmao");
-                initModule({ location: tp[tab.storeAs + "Guide"].pages[i], storeAs: storeAs, monitor: (text.split('\n').length + 0.25), });
-                monitorObjects[storeAs] = text;
-                const infoElement = tp[storeAs + "Button"].controller_.view.element.children[1].children[0];
-                infoElement.style.width = "270px";
-                infoElement.style.setProperty("margin-left", "-110px", "important");
-            };
-        };
     };
     const initFolder = function (folder) {
         tp[folder.storeAs] = folder.location.addFolder({
@@ -576,95 +554,23 @@ console.log("StateFarm: running (before function)");
         //SFC CHAT
         initFolder({ location: tp.mainPanel, title: "StateFarm Chat", storeAs: "sfChatFolder", });
         initTabs({ location: tp.sfChatFolder, storeAs: "sfChatTab" });
-            initModule({ location: tp.sfChatTab.pages[0], title: "Username", storeAs: "sfChatUsername", defaultValue: ("Guest" + (Math.floor(Math.random() * 8999) + 1000)), });
-            // initModule({ location: tp.sfChatTab.pages[0], title: "Join Chat", storeAs: "sfChatJoin", button: "Join", bindLocation: tp.sfChatTab.pages[1], clickFunction: function(){
-            //     if (sfChatIframe != undefined){
-            //         createPopup("Already Started. Try Showing it.");
-            //     } else {
-            //         startStateFarmChat();
-            //     };
-            // },});
-            tp.sfChatTab.pages[0].addSeparator();
             initModule({
-                location: tp.sfChatTab.pages[0], title: "Show/Hide", storeAs: "sfChatShowHide", button: "Show/Hide", bindLocation: tp.sfChatTab.pages[1], defaultBind: "K", clickFunction: function () {
-                    if (sfChatContainer != undefined) {
-                        if (sfChatContainer.style.display == "none") {
-                            sfChatContainer.style.display = "block";
-                        } else {
-                            sfChatContainer.style.display = "none";
-                        };
+                location: tp.sfChatTab.pages[0], title: "Open Chat", storeAs: "openChat", button: "Open!", bindLocation: tp.sfChatTab.pages[1], defaultBind: "K", clickFunction: () => {
+                    if (!document.querySelector('#chatOpener'))
+                        [...document.querySelectorAll('.tp-btnv_t')].find(r => r.textContent === 'Open!').id = 'chatOpener'; // eslint-disable-line
+
+                    if (document.querySelector('#sfchat').style.display === 'none') {
+                        document.querySelector('#chatOpener').textContent = 'Close :(';
+                        document.querySelector('#sfchat').style.display = '';
                     } else {
-                        startStateFarmChat(); //its just easier this way imo
+                        document.querySelector('#chatOpener').textContent = 'Open!';
+                        document.querySelector('#sfchat').style.display = 'none';
                     };
-                },
+                }
             });
-            tp.sfChatTab.pages[0].addSeparator();
-            initModule({ location: tp.sfChatTab.pages[0], title: "Notifications", storeAs: "sfChatNotifications", bindLocation: tp.sfChatTab.pages[1], });
-            initModule({ location: tp.sfChatTab.pages[0], title: "Notification Sound", storeAs: "sfChatNotificationSound", bindLocation: tp.sfChatTab.pages[1], });
-            initModule({ location: tp.sfChatTab.pages[0], title: "Auto Start Chat", storeAs: "sfChatAutoStart", bindLocation: tp.sfChatTab.pages[1], });
         //COMBAT MODULES
         initFolder({ location: tp.mainPanel, title: "Combat", storeAs: "combatFolder", });
-        initTabs({ location: tp.combatFolder, storeAs: "combatTab" }, [
-            {
-                title: "Basics", content:
-                    `This is the combat tab. Here you will find
-options relating to aimbotting, and other
-useful macros. Aimbot is made active by
-turning it on. Using ToggleRM will give you
-more control by allowing you to switch by
-pressing the right mouse button.
-TargetMode also allows a more intuitive
-means of selecting who you will target.
-The most powerful features you can use
-are Predictions and Antibloom. These
-improve the accuracy of the tracking.
-AntiSwitch will make you lock on to a
-target until they die, and if you don't want
-to target them after they die then choose
-1Kill too. Auto Refill helps you stay
-topped up and choosing the Smart
-mode allows you to refill at the moment
-when you will not have a long
-reload time. GrenadeMAX makes all
-grenades get thrown at max strength.`},
-            {
-                title: "Visibility", content:
-                    `There are a couple of options related to
-visibility (Line-of-Sight). First is
-TargetVisible. This tunes the aimbot to
-be more strategic with where it aims.
-NoWallTrack makes it such that if a
-targeted player goes behind a wall, you
-stop aimlocking them. There is also an
-AutoFire mode with this sort of
-functionality.`},
-            {
-                title: "Advanced", content:
-                    `If you want to increase stealthiness,
-make use of MinAngle and AntiSnap. The
-first will make it so that you have to
-manually move your reticle within your
-specified radius to lock on. The latter
-smooths snapping, which evades
-detection on botter spotter scripts.
-If you want to be more powerful, opt for
-SilentAim. This modifies your direction
-packets instead of making you lock on.
-However, this can lead to slightly glitchy
-movement. When this is on, MinAngle
-changes to instead narrow down the
-selection of targets rather than acting
-as a guide.
-AntiSneak is a module which, while not
-always showing use, can help you in a
-difficult situation. It automatically
-switches targets to a player that enters
-your specified range, and begins
-shooting with your primary gun, and then
-the pistol. Ideal use case is when you are
-sniping and someone sneaks up on you
-(...hence it is called... AntiSneak).`},
-        ]);
+        initTabs({ location: tp.combatFolder, storeAs: "combatTab" });
             initModule({ location: tp.combatTab.pages[0], title: "Aimbot", storeAs: "aimbot", bindLocation: tp.combatTab.pages[1], defaultBind: "V", });
             initFolder({ location: tp.combatTab.pages[0], title: "Aimbot Options", storeAs: "aimbotFolder", });
                 initModule({ location: tp.aimbotFolder, title: "TargetMode", storeAs: "aimbotTargetMode", bindLocation: tp.combatTab.pages[1], defaultBind: "T", dropdown: [{ text: "Pointing At", value: "pointingat" }, { text: "Nearest", value: "nearest" }], defaultValue: "pointingat", enableConditions: [["aimbot", true]], });
@@ -975,9 +881,7 @@ sniping and someone sneaks up on you
                                 //dont care lmaoooo
                             };
                         };
-                        if (!presetIgnore.includes(key)){
-                            addParam(key, value);
-                        }
+                        addParam(key, value);
                     });
                     saveString = saveString.substring(0, saveString.length - 1);
                     let presetName = prompt("Name of preset:"); // asks user for name of preset
@@ -1183,7 +1087,8 @@ sniping and someone sneaks up on you
     };
     //visual functions
     const createPopup = function (text, type) {
-        console.log("Creating Popup Type:", type, "With Text:", text);
+        if (text === 'NOMSG') return;
+
         try {
             if (extract("popups")) {
                 const messageContainer = document.getElementById('message-container');
@@ -1216,116 +1121,10 @@ sniping and someone sneaks up on you
             alert("Bollocks! If you're getting this message, injection probably failed. To solve this, perform CTRL+F5 - this performs a hard reload. If this does not work, contact the developers.");
         };
     };
-    //StateFarmChat functions
-    const sfChatUsernameSet = function () {
-        if (sfChatUsername != extract("sfChatUsername") && sfChatIframe != undefined) {
-            sfChatUsername = extract("sfChatUsername");
-            sfChatIframe.contentWindow.postMessage("SFCHAT-UPDATE" + JSON.stringify({ name: sfChatUsername }), "*");
-        };
-    };
-    const startStateFarmChat = function (startHidden) {
-        //UnsafewindowVars
-        const makeChatDragable = function (element) {
-            if (element.getAttribute("drag-true") != "true") {
-                element.addEventListener("mousedown", function (e) {
-                    let offsetX = e.clientX - parseInt(window.getComputedStyle(this).left);
-                    let offsetY = e.clientY - parseInt(window.getComputedStyle(this).top);
-                    function mouseMoveHandler(e) {
-                        let newX = e.clientX - offsetX;
-                        let newY = e.clientY - offsetY;
-                        if (newX >= 0 && newX + element.getBoundingClientRect().width <= window.innerWidth) {
-                            element.style.left = newX + "px";
-                        }
-                        if (newY >= 0 && newY + element.getBoundingClientRect().height <= window.innerHeight) {
-                            element.style.top = newY + "px";
-                        }
-                    }
 
-                    function reset() {
-                        window.removeEventListener("mousemove", mouseMoveHandler);
-                        window.removeEventListener("mouseup", reset);
-                    }
-
-                    window.addEventListener("mousemove", mouseMoveHandler);
-                    window.addEventListener("mouseup", reset);
-                });
-
-                element.setAttribute("drag-true", "true");
-            };
-        };
-
-        sfChatContainer = document.createElement("div");
-        sfChatContainer.style.padding = "1px";
-        let title = document.createElement("p");
-        title.style.fontSize = "medium";
-        title.style.color = "#D6D6D6";
-        title.innerHTML = "StateFarm Chat";
-        sfChatContainer.appendChild(title);
-        sfChatContainer.style.backgroundColor = "#555";
-        sfChatContainer.style.position = "absolute";
-        sfChatContainer.style.borderRadius = "10px";
-        sfChatContainer.style.textAlign = "center";
-        sfChatContainer.style.top = "20px";
-        sfChatContainer.style.left = "20px";
-        sfChatContainer.style.zIndex = 100000000;
-        if (startHidden){
-            sfChatContainer.style.display = 'none';
-        }
-
-        const sendSettings = function () {
-            let settings = GM_getValue("SFCHAT-SETTINGS");
-            if (settings) {
-                sfChatIframe.contentWindow.postMessage("SFCHAT-SETTINGS" + settings, "*");
-            } else {
-                sfChatIframe.contentWindow.postMessage("SFCHAT-SETTINGS", "*");
-            };
-        };
-
-        makeChatDragable(sfChatContainer);
-        sfChatIframe = document.createElement("iframe");
-        sfChatIframe.setAttribute(
-            "src",
-            "https://raw.githack.com/OakSwingZZZ/StateFarmChatFiles/main/index.html"
-        );
-        sfChatIframe.id = "sfChat-iframe";
-        sfChatIframe.setAttribute("style", "width: 600px; height:700px; z-index: 10000;");
-        sfChatContainer.appendChild(sfChatIframe);
-        document.getElementsByTagName("body")[0].appendChild(sfChatContainer);
-
-        const startTimeout = setTimeout(function () {
-            console.log("settings");
-            sendSettings();
-            let nameChange = setTimeout(function () {
-                sfChatUsername = extract("sfChatUsername");
-                sfChatIframe.contentWindow.postMessage("SFCHAT-UPDATE" + JSON.stringify({ name: sfChatUsername }), "*");
-            }, 500);
-        }, 1000);
-
-        unsafeWindow.addEventListener("message", (e) => {
-            if (typeof e.data == "string"){
-                if (e.data.startsWith("SFCHAT-UPDATE")) {
-                    GM_setValue("SFCHAT-SETTINGS", e.data.replace(/SFCHAT-UPDATE/gm, ""));
-                }
-                if (e.data.startsWith("SFCHAT-REQUEST")) {
-                    sendSettings();
-                };
-                if (e.data.startsWith("SFCHAT-MESSAGE")) {
-                    let stringMessage = e.data.replace(/SFCHAT-MESSAGE/gm, "");
-                    let message = JSON.parse(stringMessage);
-                    if (extract("sfChatNotifications") && message.user && message.message && (sfChatContainer.style.display == "none")){
-                        if (message.message.length <= 50){
-                            createPopup(message.user.name + ": " + message.message);
-                        }else{
-                            createPopup(message.user.name + ": " + message.message.substring(0, 50) + "...");
-                        }
-                        if (extract("sfChatNotificationSound")){
-                            BAWK.play("grenade_cellphone");
-                        }
-                    }
-                }
-            }
-        });
-    };
+    unsafeWindow.addEventListener('DOMContentLoaded', () => document.body.insertAdjacentHTML('beforeend', `
+        <iframe id='sfchat' src='https://cc.villainsrule.xyz' style='width: 500px;height: 600px;position: absolute;top: 15px;left: 15px;border: none;z-index: 99999999999999;display: none;border-radius: 5px;'>
+    `));
 
     const applyStylesAddElements = function (themeToApply = "null") {
         const head = document.head || document.getElementsByTagName('head').pages[0];
@@ -2318,12 +2117,8 @@ z-index: 999999;
                 mapNodes: GLOBAL_NODE_LIST,
             };
         };
-        if (extract('sfChatAutoStart') && !sfChatContainer){
-            startStateFarmChat(true);
-        }
         startUpComplete = (!document.getElementById("progressBar"));
         let botsDict = GM_getValue("StateFarm_BotStatus");
-        sfChatUsernameSet();
         if (!botsDict) botsDict = {};
         if (AUTOMATED) {
             if (clientID) {
@@ -3664,12 +3459,12 @@ z-index: 999999;
                 try {
                     js = js.originalReplaceAll(find, replace);
                 } catch (err) {
-                    console.log("%cReplacement failed! Likely a required var was not found. Attempted to replace " + find + " with: " + replace, 'color: red; font-weight: bold; font-size: 0.6em; text-decoration: italic;');
+                    console.log("%cReplacement failed! Likely a required var was not found. Attempted to replace " + find + " with: " + replace, 'color: red; font-weight: bold; text-decoration: italic;');
                 };
                 if (oldJS !== js) {
-                    console.log("%cReplacement successful! Injected code: replaced: " + find + " with: " + replace, 'color: green; font-weight: bold; font-size: 0.6em; text-decoration: italic;');
+                    console.log("%cReplacement successful! Injected code: replaced: " + find + " with: " + replace, 'color: green; font-weight: bold; text-decoration: italic;');
                 } else {
-                    console.log("%cReplacement failed! Attempted to replace " + find + " with: " + replace, 'color: red; font-weight: bold; font-size: 0.6em; text-decoration: italic;');
+                    console.log("%cReplacement failed! Attempted to replace " + find + " with: " + replace, 'color: red; font-weight: bold; text-decoration: italic;');
                 };
             };
 
@@ -3740,7 +3535,7 @@ z-index: 999999;
             match = js.match(/static play\(([a-zA-Z$_,]+)\){/);
             console.log("AUDIO INTERCEPTION", match);
             modifyJS(match[0], `${match[0]}[${match[1]}] = window.${functionNames.interceptAudio}(${match[1]});`);
-            modifyJS('"IFRAME"==document.activeElement.tagName', `("IFRAME"==document.activeElement.tagName&&document.activeElement.id!=='sfChat-iframe')`);
+            modifyJS('"IFRAME"==document.activeElement.tagName', `("IFRAME"==document.activeElement.tagName&&document.activeElement.id!=='sfchat')`);
 
             modifyJS('console.log("startShellShockers"),', `console.log("STATEFARM ACTIVE!"),`);
             modifyJS(/tp-/g, '');
@@ -4430,7 +4225,6 @@ z-index: 999999;
 
         const createMapData = function () {
             if (!map_data_created) {
-                console.log("Creating map data");
                 new MapNode(new Position(ss.GAMEMAP.data.length - 1, ss.GAMEMAP.data[0].length - 1, ss.GAMEMAP.data[0][0].length - 1), [], ss.GAMEMAP.data);
                 map_data_created = true;
                 return true;
@@ -4438,11 +4232,9 @@ z-index: 999999;
         }
 
         const mapStuff = function () {
-
             //console.log("node = " + get_node_at(get_player_position(ss.MYPLAYER)), "nodelist len = " + GLOBAL_NODE_LIST.length);
 
             if (findNewPath && !activePath && !activeNodeTarget && get_node_at(get_player_position(ss.MYPLAYER))) {
-
                 let player_pos = get_player_position(ss.MYPLAYER);
                 let player_node = get_node_at(player_pos);
                 if (player_node) {
@@ -4942,7 +4734,7 @@ z-index: 999999;
 
         createAnonFunction("STATEFARM", function () {
             ss.PLAYERS.forEach((PLAYER) => (PLAYER.hasOwnProperty("ws")) ? (ss.MYPLAYER = PLAYER) : null);
-            
+
             if (!ranOneTime) {
                 oneTime();
             } else if (typeof (L.BABYLON) !== 'undefined') {
