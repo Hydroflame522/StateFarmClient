@@ -942,9 +942,7 @@ console.log("StateFarm: running (before function)");
                                 //dont care lmaoooo
                             };
                         };
-                        if (!presetIgnore.includes(key)){
-                            addParam(key, value);
-                        }
+                        addParam(key, value);
                     });
                     saveString = saveString.substring(0, saveString.length - 1);
                     GM_setClipboard(saveString, "text", () => console.log("Clipboard set!"));
@@ -2480,9 +2478,9 @@ z-index: 999999;
                 let option = args[1]; // eslint-disable-line
                 if (option) {
                     if (option === "set") {
-                        x = args[2];
-                        y = args[3];
-                        z = args[4];
+                        let x = args[2];
+                        let y = args[3];
+                        let z = args[4];
                         if (x && y && z) {
                             pathfindingTargetOverride = { x: x, y: y, z: z };
                             isFirstFrameAttemptingToPathfind = true;
@@ -3275,7 +3273,7 @@ z-index: 999999;
         });
         createAnonFunction('modifyChat', function (msg) {
             if (msg[0] === '%') { //message is a command
-                command = msg.slice(1);
+                let command = msg.slice(1);
                 msg = ""; //dont send anything
                 if (command != "pts") {
                     broadcastToBots(command);
@@ -3928,13 +3926,13 @@ z-index: 999999;
                         var is_air_directly_below = isNodeAir(node_below_checked_node); // self explanatory
                         var is_solid_directly_below = !is_air_directly_below ? node_below_checked_node.mesh.name.includes("full") : false;
                         var is_partial_directly_below = !is_air_directly_below && !is_solid_directly_below
-
+                        var node_directly_below_node_doing_the_checking;
 
                         try {
-                            var node_directly_below_node_doing_the_checking = map_data[this.position.x][this.position.y - 1][this.position.z];
+                            node_directly_below_node_doing_the_checking = map_data[this.position.x][this.position.y - 1][this.position.z];
                         } catch (error) {
                             console.log(error);
-                            var node_directly_below_node_doing_the_checking = {};
+                            node_directly_below_node_doing_the_checking = {};
                         };
 
                         var is_solid_directly_below_node_doing_checking = !isNodeAir(node_directly_below_node_doing_the_checking) && node_directly_below_node_doing_the_checking.mesh.name.includes("full");
@@ -3958,11 +3956,11 @@ z-index: 999999;
 
                         // if the node is already in the list, add a link to it. Otherwise create it and then add a link to it.
                         // if it's air / equivalent to air we can create it (but not necessarily link to it)
-                            if (GLOBAL_NODE_LIST.some(item => item.position.x == map_data_x && item.position.y == map_data_y && item.position.z == map_data_z)) { // this node already exists, link to it
+                            if (GLOBAL_NODE_LIST.some(item => item.position.x == map_data_x && item.position.y == map_data_y && item.position.z == map_data_z)) { // eslint-disable-line
+                                // ^^ this node already exists, link to it
                                 if (is_valid_candidate) {
                                     found_link++;
-                                    this.add_link(GLOBAL_NODE_LIST.find(item => item.position.x == map_data_x && item.position.y == map_data_y && item.position.z == map_data_z));
-
+                                    this.add_link(GLOBAL_NODE_LIST.find(item => item.position.x == map_data_x && item.position.y == map_data_y && item.position.z == map_data_z)); // eslint-disable-line
                                 }
 
                             } else {
@@ -4272,10 +4270,10 @@ z-index: 999999;
 
             if (pathfindingTargetOverride !== undefined) {
                 createMapData();
-                player_node = get_node_at(get_player_position(ss.MYPLAYER));
-                target_node = get_node_at(pathfindingTargetOverride);
+                let player_node = get_node_at(get_player_position(ss.MYPLAYER));
+                let target_node = get_node_at(pathfindingTargetOverride);
                 if (player_node && target_node && !activePath) {
-                    path = AStar(player_node, target_node);
+                    let path = AStar(player_node, target_node);
 
                     if (path) {
                         if (path.length > 0) {
