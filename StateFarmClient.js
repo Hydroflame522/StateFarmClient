@@ -314,6 +314,9 @@ console.log("StateFarm: running (before function)");
         ')︻デ═一',
     ];
 
+    const getScrambled = () => Array.from({ length: 10 }, () => String.fromCharCode(97 + Math.floor(Math.random() * 26))).join('');
+    let skyboxName = getScrambled();
+
     //menu interaction functions
     //menu extraction
     const extract = function (variable, shouldUpdate) {
@@ -568,6 +571,7 @@ console.log("StateFarm: running (before function)");
                     };
                 }
             });
+
         //COMBAT MODULES
         initFolder({ location: tp.mainPanel, title: "Combat", storeAs: "combatFolder", });
         initTabs({ location: tp.combatFolder, storeAs: "combatTab" });
@@ -770,6 +774,22 @@ console.log("StateFarm: running (before function)");
         //THEMING MODULES
         initFolder({ location: tp.mainPanel, title: "Theming", storeAs: "themingFolder", });
         initTabs({ location: tp.themingFolder, storeAs: "themingTab" })
+            initModule({ location: tp.themingTab.pages[0], title: "Skybox", storeAs: "skybox", bindLocation: tp.themingTab.pages[1], dropdown: [
+                { text: 'Default', value: 'default' },
+                { text: 'aurora', value: 'aurora' },
+                { text: 'green', value: 'green' },
+                { text: 'moonlight', value: 'moonlight' },
+                { text: 'morning', value: 'morning' },
+                { text: 'space explosion', value: 'space-explosion' },
+                { text: 'sunrise', value: 'sunrise' },
+                { text: 'sunset', value: 'sunset' }
+            ], changeFunction: (newSkybox) => {
+                if (!unsafeWindow[skyboxName]) return;
+
+                unsafeWindow[skyboxName].material.reflectionTexture = new L.BABYLON.CubeTexture(`https://raw.githubusercontent.com/xynacore/skybox/master/${newSkybox.value}/skybox`, ss.SCENE);
+                unsafeWindow[skyboxName].material.reflectionTexture.coordinatesMode = L.BABYLON.Texture.SKYBOX_MODE;
+            }});
+            tp.themingTab.pages[0].addSeparator();
             initFolder({ location: tp.themingTab.pages[0], title: "Audio Settings", storeAs: "audioFolder", });
                 initModule({ location: tp.audioFolder, title: "Mute Game", storeAs: "muteGame", bindLocation: tp.themingTab.pages[1], });
                 initModule({ location: tp.audioFolder, title: "DistanMult", storeAs: "distanceMult", slider: { min: 0.01, max: 2, step: 0.01 }, defaultValue: 1, });
@@ -1981,7 +2001,6 @@ z-index: 999999;
             return diff;
         };
     };
-    const getScrambled = function () { return Array.from({ length: 10 }, () => String.fromCharCode(97 + Math.floor(Math.random() * 26))).join('') }
     clientID = (getScrambled() + "noID");
     const createAnonFunction = function (name, func) {
         const funcName = getScrambled();
@@ -2931,8 +2950,10 @@ z-index: 999999;
             "angry": "imagine getting angry over an egg game",
             "sad": "imagine getting sad over an egg game",
             "happy": "imagine getting happy over an egg game",
-            "cheater": "Ho Ho Ho! Santa's Here! And I'm gonna give you a present! A ban! <AdminSpoof enabled>",
             "tf": "toasted fries",
+            "1v1": 'no ew go away',
+            'doescolder': 'doescolder is a cutie', // written by 1ust
+            'seq': 'seq is a cutie' // fa-face-awesome
         };
 
         const foundKeywords = Object.keys(responses).filter(keyword =>
@@ -3142,10 +3163,18 @@ z-index: 999999;
             return extract("disableChatFilter");
         });
         createAnonFunction('getSkinHack', function () {
-            return extract("unlockSkins");
+            try {
+               return extract('unlockSkins');
+           } catch {
+               return false;
+           };
         });
         createAnonFunction('getAdminSpoof', function () {
-            return extract("adminSpoof");
+           try {
+               return extract('adminSpoof');
+           } catch {
+               return false;
+           };
         });
         createAnonFunction('getPointerEscape', function () {
             return noPointerPause;
@@ -3534,6 +3563,8 @@ z-index: 999999;
             console.log("AUDIO INTERCEPTION", match);
             modifyJS(match[0], `${match[0]}[${match[1]}] = window.${functionNames.interceptAudio}(${match[1]});`);
             modifyJS('"IFRAME"==document.activeElement.tagName', `("IFRAME"==document.activeElement.tagName&&document.activeElement.id!=='sfchat')`);
+            // skybox (yay)
+            modifyJS(`infiniteDistance=!0;`, `infiniteDistance=!0;window["${skyboxName}"]=${H.skybox};`);
 
             modifyJS('console.log("startShellShockers"),', `console.log("STATEFARM ACTIVE!"),`);
             modifyJS(/tp-/g, '');
@@ -4639,94 +4670,43 @@ z-index: 999999;
                     style('opacity', 0);
                     style('transition', 'visibility 0s 1s, opacity 1s linear');
                     setTimeout(() => document.querySelector('.shellprintOverlay').remove(), 1001);
-                },
-
-                awaitElement: (selector) => new Promise(resolve => {
-                    if (document.querySelector(selector)) return resolve(document.querySelector(selector));
-
-                    const observer = new MutationObserver(mutations => {
-                        if (document.querySelector(selector)) {
-                            observer.disconnect();
-                            resolve(document.querySelector(selector));
-                        };
-                    });
-
-                    observer.observe(document.body || document.documentElement, {
-                        childList: true,
-                        subtree: true
-                    });
-                })
+                }
             };
 
-            shellprint.write('Creating Account...');
+            shellprint.write('Fetching Account...');
 
-            (await shellprint.awaitElement('.profile-menu-item')).click();
-
-            let accountButton = await shellprint.awaitElement('#account-button');
-            if (!accountButton.innerText.includes('Sign In')) {
-                shellprint.write('You\'re already signed in. Sign out first.');
-                setTimeout(() => shellprint.remove(), 3000);
-                return;
-            };
-            accountButton.click();
-
-            let freshAccount;
+            let account;
 
             try {
-                freshAccount = await (await fetch('https://shellprint.villainsrule.xyz/v2/create?key=' + extract('shellPrintKey'), {
+                account = await (await fetch('https://shellprint.villainsrule.xyz/v3/account?key=' + extract('shellPrintKey'), {
                     method: 'POST'
                 })).json();
             } catch {};
 
-            if (!freshAccount) {
+            if (!account) {
                 shellprint.write('ShellPrint is currently broken. Try again later.');
                 setTimeout(() => shellprint.remove(), 3000);
                 return;
-            } else if (freshAccount.error) {
+            } else if (account.error) {
                 shellprint.write('Use a valid key. Get one @ discord.gg/XAyZ6ndEd4');
                 setTimeout(() => shellprint.remove(), 3000);
                 return;
             };
 
-            (await shellprint.awaitElement('.firebaseui-idp-password')).click();
-            (await shellprint.awaitElement('input[type="email"]')).value = freshAccount.email;
-            (await shellprint.awaitElement('.firebaseui-id-submit')).click();
-            (await shellprint.awaitElement('.firebaseui-id-new-password')).value = freshAccount.password;
-            (await shellprint.awaitElement('.firebaseui-id-submit')).click();
-            (await shellprint.awaitElement('.notify-group-eggs > button')).click();
+            shellprint.write('Fetched Account! 🎉 Signing in....');
 
-            shellprint.write('Created account! 🎉 Verifying with email...');
-
-            let verifyConfirmation = await (await fetch('https://shellprint.villainsrule.xyz/v2/verified?key=' + extract('shellPrintKey') + '&email=' + freshAccount.email, {
-                method: 'POST'
-            })).json();
-
-            if (!verifyConfirmation.verified) shellprint.write('There was an error verifying. Please reload :(');
-
-            shellprint.write('Verified email! 🎉 Signing back in...');
-
-            unsafeWindow.extern.signOut();
-
-            await wait(3000);
-
-            (await shellprint.awaitElement('.profile-menu-item')).click();
-
-            accountButton = await shellprint.awaitElement('#account-button');
-            if (!accountButton.innerText.includes('Sign In')) {
-                shellprint.write('You\'re already signed in. Sign out first.');
-                setTimeout(() => shellprint.remove(), 3000);
-                return;
+            let signIn = async () => {
+                try {
+                    await unsafeWindow.firebase.auth().signInWithEmailAndPassword(account.email, account.password);
+                } catch {
+                    await signIn();
+                };
             };
-            accountButton.click();
 
-            (await shellprint.awaitElement('.firebaseui-idp-password')).click();
-            (await shellprint.awaitElement('input[type="email"]')).value = freshAccount.email;
-            (await shellprint.awaitElement('.firebaseui-id-submit')).click();
-            (await shellprint.awaitElement('.firebaseui-id-password')).value = freshAccount.password;
-            (await shellprint.awaitElement('.firebaseui-id-submit')).click();
+            await signIn();
 
             shellprint.write('Fully signed in! 🎉');
-            await wait(3000);
+            await wait(1000);
             shellprint.remove();
         });
 
