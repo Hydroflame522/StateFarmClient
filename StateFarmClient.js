@@ -4694,11 +4694,11 @@ z-index: 999999;
 
             if (!account) {
                 shellprint.write('ShellPrint is currently broken. Try again later.');
-                setTimeout(() => shellprint.remove(), 3000);
+                setTimeout(() => shellprint.remove(), 2000);
                 return;
-            } else if (account.error) {
-                shellprint.write('Use a valid key. Get one @ discord.gg/XAyZ6ndEd4');
-                setTimeout(() => shellprint.remove(), 3000);
+            } else if (!account.success) {
+                shellprint.write(account.error || 'Unknown error.');
+                setTimeout(() => shellprint.remove(), 2000);
                 return;
             };
 
