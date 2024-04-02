@@ -820,10 +820,11 @@ console.log("StateFarm: running (before function)");
             initModule({ location: tp.miscTab.pages[0], title: "Admin Spoof", storeAs: "adminSpoof", bindLocation: tp.miscTab.pages[1], });
             tp.miscTab.pages[0].addSeparator();
             initModule({ location: tp.miscTab.pages[0], title: "Unban", storeAs: "unban", bindLocation: tp.miscTab.pages[1], button: "UNBAN NOW", clickFunction: function(){
-                const userConfirmed=confirm("By proceeding, you will be signed out. If you don't have an account, your stats will be lost.");
-                if (userConfirmed) {
+                if (GM_getValue('StateFarm_Unbanned')) unban();
+                else if (prompt("By proceeding, you will be signed out. If you don't have an account, your stats will be lost.\nEnter 'ok' to confirm this.\nThis popup will not be shown again for future unbans.") === 'ok') {
+                    GM_setValue('StateFarm_Unbanned', 'true');
                     unban();
-                };
+                } else alert('You did not entire "ok", so the unban was cancelled.');
             },});
             initModule({ location: tp.miscTab.pages[0], title: "Auto Unban", storeAs: "autoUnban", bindLocation: tp.miscTab.pages[1],});
             initModule({ location: tp.miscTab.pages[0], title: "New Proxy", storeAs: "newProxy", bindLocation: tp.miscTab.pages[1], button: "NEW PROXY", clickFunction: function(){
@@ -1862,7 +1863,7 @@ z-index: 999999;
         unsafeWindow.extern.signOut();
         setTimeout(() => {
             const banPopup = document.getElementById("bannedPopup");
-            if (banPopup) { banPopup.style.display = 'none' }; //hide it
+            if (banPopup) banPopup.style.display = 'none';
         }, 10000);
     };
     const reloadPage = function () {
@@ -4611,6 +4612,14 @@ z-index: 999999;
         };
         createAnonFunction("retrieveFunctions", function (vars, doStateFarm) {
             ss = vars;
+
+            unsafeWindow.vueApp._showGenericPopup = unsafeWindow.vueApp.showGenericPopup;
+
+            unsafeWindow.vueApp.showGenericPopup = (...args) => {
+                if (args[0] === 'session_expired') return;
+                return unsafeWindow.vueApp._showGenericPopup(...args);
+            };
+
             if (doStateFarm) {
                 didStateFarm = true;
                 return F.STATEFARM();
