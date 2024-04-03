@@ -443,7 +443,8 @@ console.log("StateFarm: running (before function)");
                             case ("hide"):
                                 popupText = "Toggled StateFarm Panel"; break;
                             case ("showBotPanel"):
-                                popupText = "Toggled Bot Panel"; break;
+                                if (typeof isCrackedShell === 'undefined') popupText = "Toggled Bot Panel";
+                                break;
                             case ("openChat"):
                                 popupText = "Toggled SFC Chat"; break;
                             case ("panic"):
@@ -768,7 +769,10 @@ console.log("StateFarm: running (before function)");
         //BOTTING MODULES
         initFolder({ location: tp.mainPanel, title: "Botting", storeAs: "bottingFolder", });
         initTabs({ location: tp.bottingFolder, storeAs: "bottingTab" })
-            initModule({ location: tp.bottingTab.pages[0], title: "Show Panel", storeAs: "showBotPanel", bindLocation: tp.bottingTab.pages[1], button: "Show Panel", clickFunction: function () { tp.botPanel.hidden = !tp.botPanel.hidden }, defaultBind: "J", });
+            initModule({ location: tp.bottingTab.pages[0], title: "Show Panel", storeAs: "showBotPanel", bindLocation: tp.bottingTab.pages[1], button: "Show Panel", clickFunction: () => {
+                if (typeof isCrackedShell === 'undefined') tp.botPanel.hidden = !tp.botPanel.hidden;
+                else alert(`Botting is currently not supported on CrackedShell.`);
+            }, defaultBind: "J", });
             tp.bottingTab.pages[0].addSeparator();
             initModule({ location: tp.bottingTab.pages[0], title: "How To?", storeAs: "bottingGuide", button: "Link", clickFunction: function () { GM_openInTab(bottingGuideURL, { active: true }) }, });
         //THEMING MODULES
@@ -2407,8 +2411,8 @@ z-index: 999999;
         };
 
         const banPopup = document.getElementById("bannedPopup");
-        if (attemptedInjection && banPopup && unsafeWindow.vueApp.bannedPopup.expire !== "") isBanned = true;
-        if (isBanned && extract("autoUnban") && (!attemptedAutoUnban)) {
+        if (attemptedInjection && banPopup && unsafeWindow.vueApp?.bannedPopup?.expire !== "") isBanned = true;
+        if (isBanned && extract("autoUnban") && (!attemptedAutoUnban) && unsafeWindow.vueApp?.bannedPopup) {
             console.log("eep!");
             banPopup.textContent = 'StateFarm AutoUnban:\nPLEASE RELOAD FOR THE NEXT\n20s to 1min for new database\nID for unban. Enjoy! :)\nBan message will be automatically removed from screen in 15 seconds.';
             unban();
@@ -3420,9 +3424,8 @@ z-index: 999999;
                 return fetchTextContent("https://raw.githubusercontent.com/StateFarmNetwork/client-keys/main/statefarm_" + hash + ".json");
             };
 
-
             let hash, onlineClientKeys;
-            hash = CryptoJS.SHA256(js).toString(CryptoJS.enc.Hex); // eslint-disable-line
+            hash = CryptoJS.SHA256(originalJS).toString(CryptoJS.enc.Hex); // eslint-disable-line
             onlineClientKeys = getVardata(hash);
 
             if (onlineClientKeys == "value_undefined" || onlineClientKeys == null) {
