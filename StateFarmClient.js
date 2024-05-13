@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shell Shockers Aimbot & ESP: StateFarm Client V3 - Cheats For Bloom, Chat, Botting, Unbanning & More
 // @description  Fixed for 0.47.7! Advanced, Open Source, No Ads. Best cheats menu for Shell Shockers in 2024. Many modules such as Aimbot, PlayerESP, AmmoESP, Chams, Nametags, Join/Leave messages, Chat Filter Disabling, AntiAFK, FOV Slider, Zooming, Co-ords, Player Stats, Auto Refill and many more whilst having unsurpassed customisation options such as binding to any key, easily editable colour scheme and themes - all on the fly!
-// @author       Hydroflame521, onlypuppy7, enbyte, notfood, 1ust, OakSwingZZZ and de_Neuublue
+// @author       Hydroflame521, onlypuppy7, enbyte, notfood, 1ust, OakSwingZZZ  and de_Neuublue
 // @namespace    http://github.com/Hydroflame522/StateFarmClient/
 // @supportURL   http://github.com/Hydroflame522/StateFarmClient/issues/
 // @license      GPL-3.0
@@ -686,7 +686,7 @@ sniping and someone sneaks up on you
         ]);
             initModule({ location: tp.combatTab.pages[0], title: "Aimbot", storeAs: "aimbot", bindLocation: tp.combatTab.pages[1], defaultBind: "V", });
             initFolder({ location: tp.combatTab.pages[0], title: "Aimbot Options", storeAs: "aimbotFolder", });
-                initModule({ location: tp.aimbotFolder, title: "Force target refresh", storeAs: "targetRefresh", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], }); //I hate this but whatever
+                initModule({ location: tp.aimbotFolder, title: "Force target refresh", storeAs: "targetRefresh", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true], ["antiSwitch", false]], }); //I hate this but whatever
                 initModule({ location: tp.aimbotFolder, title: "TargetMode", storeAs: "aimbotTargetMode", bindLocation: tp.combatTab.pages[1], defaultBind: "T", dropdown: [{ text: "Pointing At", value: "pointingat" }, { text: "Nearest", value: "nearest" }], defaultValue: "pointingat", enableConditions: [["aimbot", true]], });
                 initModule({ location: tp.aimbotFolder, title: "TargetVisible", storeAs: "aimbotVisibilityMode", bindLocation: tp.combatTab.pages[1], dropdown: [{ text: "Disabled", value: "disabled" }, { text: "Prioritise Visible", value: "prioritise" }, { text: "Only Visible", value: "onlyvisible" }], defaultValue: "disabled", enableConditions: [["aimbot", true]] });
                 tp.aimbotFolder.addSeparator();
@@ -698,7 +698,7 @@ sniping and someone sneaks up on you
                 initModule({ location: tp.aimbotFolder, title: "Prediction", storeAs: "prediction", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
                 initModule({ location: tp.aimbotFolder, title: "AntiBloom", storeAs: "antiBloom", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
                 tp.aimbotFolder.addSeparator();
-                initModule({ location: tp.aimbotFolder, title: "AntiSwitch", storeAs: "antiSwitch", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
+                initModule({ location: tp.aimbotFolder, title: "AntiSwitch", storeAs: "antiSwitch", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true], ["targetRefresh", false]], });
                 initModule({ location: tp.aimbotFolder, title: "1 Kill", storeAs: "oneKill", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
                 tp.aimbotFolder.addSeparator();
                 initModule({ location: tp.aimbotFolder, title: "MinAngle", storeAs: "aimbotMinAngle", slider: { min: 0.05, max: 360, step: 1 }, defaultValue: 360, enableConditions: [["aimbot", true]], });
@@ -4835,7 +4835,7 @@ z-index: 999999;
                             // console.log('weird case, looking downwards to x/y/z from x/y/z', map_data_x, map_data_y, map_data_z, this.position.x, this.position.y, this.position.z, 'is air directly below?', is_air_directly_below, 'is solid directly below?', is_solid_directly_below, 'is partial directly below?', is_partial_directly_below, 'is valid candidate?', is_valid_candidate)
                             //shit lags, lol
                         };
-                        
+
                         // if the node is already in the list, add a link to it. Otherwise create it and then add a link to it.
                         // if it's air / equivalent to air we can create it (but not necessarily link to it)
                         if (GLOBAL_NODE_LIST.some(item => item.position.x == map_data_x && item.position.y == map_data_y && item.position.z == map_data_z)) { // eslint-disable-line
