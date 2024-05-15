@@ -4028,7 +4028,7 @@ z-index: 999999;
             return [name, panner, somethingelse];
         });
         createAnonFunction('beforeFiring', function (MYPLAYER) {
-            if (extract("aimbot") && (extract("aimbotRightClick") ? isRightButtonDown : true) && (targetingComplete || extract("silentAimbot")) && ss.MYPLAYER[H.playing] && currentlyTargeting && currentlyTargeting[H.playing]) {
+            if (extract("aimbot") && (extract("aimbotRightClick") ? isRightButtonDown : true) && (targetingComplete || (extract("silentAimbot") &&  (deg2rad(extract("aimbotMinAngle")) > currentlyTargeting?.angleDiff))) && ss.MYPLAYER[H.playing] && currentlyTargeting && currentlyTargeting[H.playing]) {
                 const aimbot = getAimbot(currentlyTargeting);
                 // credit for code: de_neuublue
                 let diffYaw = Math.radDifference(ss.MYPLAYER[H.yaw], aimbot.yawReal) * 180 / Math.PI;
@@ -5771,7 +5771,7 @@ z-index: 999999;
                         visibleValue = player.isVisible; //assuming now that either "prioritise" or "onlyvisible" are enabled, as "onlyvisible"'s use case fulfilled in previous statement
                     };
                     if (visibleValue) {
-                        if ((valueToUse < enemyMinimumValue)  && (deg2rad(extract("aimbotMinAngle")) > player.angleDiff)) { //dont target a player THAT DOESNT MEET THE MINANGLE!!!!!!! ~Sq
+                        if ((valueToUse < enemyMinimumValue)) {
                             enemyMinimumValue = valueToUse;
                             currentlyTargeting = player;
                         };
