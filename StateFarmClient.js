@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shell Shockers Aimbot & ESP: StateFarm Client V3 - Cheats For Bloom, Chat, Botting, Unbanning & More
 // @description  Fixed for 0.48.0! Advanced, Open Source, No Ads. Best cheats menu for Shell Shockers in 2024. Many modules such as Aimbot, PlayerESP, AmmoESP, Chams, Nametags, Join/Leave messages, Chat Filter Disabling, AntiAFK, FOV Slider, Zooming, Co-ords, Player Stats, Auto Refill and many more whilst having unsurpassed customisation options such as binding to any key, easily editable colour scheme and themes - all on the fly!
-// @author       Hydroflame521, onlypuppy7, enbyte, notfood, 1ust, OakSwingZZZ and de_Neuublue
+// @author       Hydroflame521, onlypuppy7, enbyte, notfood, 1ust, OakSwingZZZ, Sq and de_Neuublue
 // @namespace    http://github.com/Hydroflame522/StateFarmClient/
 // @supportURL   http://github.com/Hydroflame522/StateFarmClient/issues/
 // @license      GPL-3.0
@@ -25,7 +25,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.4.1-pre50
+// @version      3.4.1-pre51
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.shell.onlypuppy7.online/*
@@ -686,7 +686,6 @@ sniping and someone sneaks up on you
         ]);
             initModule({ location: tp.combatTab.pages[0], title: "Aimbot", storeAs: "aimbot", bindLocation: tp.combatTab.pages[1], defaultBind: "V", });
             initFolder({ location: tp.combatTab.pages[0], title: "Aimbot Options", storeAs: "aimbotFolder", });
-                initModule({ location: tp.aimbotFolder, title: "Force target refresh", storeAs: "targetRefresh", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true], ["antiSwitch", false]], }); //I hate this but whatever
                 initModule({ location: tp.aimbotFolder, title: "TargetMode", storeAs: "aimbotTargetMode", bindLocation: tp.combatTab.pages[1], defaultBind: "T", dropdown: [{ text: "Pointing At", value: "pointingat" }, { text: "Nearest", value: "nearest" }], defaultValue: "pointingat", enableConditions: [["aimbot", true]], });
                 initModule({ location: tp.aimbotFolder, title: "TargetVisible", storeAs: "aimbotVisibilityMode", bindLocation: tp.combatTab.pages[1], dropdown: [{ text: "Disabled", value: "disabled" }, { text: "Prioritise Visible", value: "prioritise" }, { text: "Only Visible", value: "onlyvisible" }], defaultValue: "disabled", enableConditions: [["aimbot", true]] });
                 tp.aimbotFolder.addSeparator();
@@ -698,7 +697,7 @@ sniping and someone sneaks up on you
                 initModule({ location: tp.aimbotFolder, title: "Prediction", storeAs: "prediction", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
                 initModule({ location: tp.aimbotFolder, title: "AntiBloom", storeAs: "antiBloom", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
                 tp.aimbotFolder.addSeparator();
-                initModule({ location: tp.aimbotFolder, title: "AntiSwitch", storeAs: "antiSwitch", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true], ["targetRefresh", false]], });
+                initModule({ location: tp.aimbotFolder, title: "AntiSwitch", storeAs: "antiSwitch", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
                 initModule({ location: tp.aimbotFolder, title: "1 Kill", storeAs: "oneKill", bindLocation: tp.combatTab.pages[1], enableConditions: [["aimbot", true]], });
                 tp.aimbotFolder.addSeparator();
                 initModule({ location: tp.aimbotFolder, title: "MinAngle", storeAs: "aimbotMinAngle", slider: { min: 0.05, max: 360, step: 1 }, defaultValue: 360, enableConditions: [["aimbot", true]], });
@@ -5713,9 +5712,6 @@ z-index: 999999;
                 enemyNearest = undefined; //used for antisneak
 
                 let previousTarget = currentlyTargeting;
-                if(extract("targetRefresh")){
-                    currentlyTargeting = false; //this is a hack to deselect player if target requirements are not met anymore, but fuck it. Will prob get removed and impl by default bc it looks like it's supposed to work that way by default.
-                }
                 let selectNewTarget = (!extract("antiSwitch") || !currentlyTargeting);
                 let isDoingAimbot = (extract("aimbot") && (extract("aimbotRightClick") ? isRightButtonDown : true) && ss.MYPLAYER[H.playing]);
                 // console.log(targetingComplete);
@@ -5760,6 +5756,10 @@ z-index: 999999;
                     };
                 });
 
+                if(selectNewTarget){
+                    currentlyTargeting = false; //code below doesnt account for no new targets, but an old one who does not meet conditions anymore ~Sq
+                }
+
                 candidates.forEach(player => {
                     const valueToUse = ((targetType == "nearest" && player.adjustedDistance) || (targetType == "pointingat" && player.angleDiff));
                     let visibleValue;
@@ -5771,7 +5771,7 @@ z-index: 999999;
                         visibleValue = player.isVisible; //assuming now that either "prioritise" or "onlyvisible" are enabled, as "onlyvisible"'s use case fulfilled in previous statement
                     };
                     if (visibleValue) {
-                        if (valueToUse < enemyMinimumValue) {
+                        if ((valueToUse < enemyMinimumValue)  && (deg2rad(extract("aimbotMinAngle")) > player.angleDiff)) { //dont target a player THAT DOESNT MEET THE MINANGLE!!!!!!! ~Sq
                             enemyMinimumValue = valueToUse;
                             currentlyTargeting = player;
                         };
