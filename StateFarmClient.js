@@ -25,7 +25,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.4.1-pre101
+// @version      3.4.1-pre102
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.shell.onlypuppy7.online/*
@@ -4611,6 +4611,13 @@ z-index: 999999;
         createAnonFunction('beforeFiring', function (MYPLAYER) {
             if (extract("aimbot") && (extract("aimbotRightClick") ? isRightButtonDown : true) && (targetingComplete || extract("silentAimbot")) && ss.MYPLAYER[H.playing] && currentlyTargeting && currentlyTargeting[H.playing]) {
                 const aimbot = getAimbot(currentlyTargeting);
+                if(extract("aimbSemiSilent") && extract("silentAimbot")){ //do semisab?
+                    ss.MYPLAYER[H.yaw] = aimbot.yawReal; //set thing
+                    ss.MYPLAYER[H.pitch] = aimbot.pitchReal;
+                    ss.SERVERSYNC(); //might not be necessary, but during testing it felt like the turn didnt sync a lot of times, 
+                    //but might just be shell's bad collsion. Anyway, this wont hurt either way so let's just sync
+                    return; //leave func, will continue normal fire(). 
+                };
                 // credit for code: de_neuublue
                 let diffYaw = Math.radDifference(ss.MYPLAYER[H.yaw], aimbot.yawReal) * 180 / Math.PI;
                 let diffPositive = diffYaw > 0 // a turn to the left if positive
@@ -4666,10 +4673,6 @@ z-index: 999999;
                     state[H.pitch] = setPrecision(aimbot.pitchReal);
                     ss.MYPLAYER[H.stateBuffer][Math.mod(ss.MYPLAYER.stateIdx - i, 256)] = state;
                 };
-                if(extract("aimbSemiSilent") && extract("silentAimbot")){
-                    ss.MYPLAYER[H.yaw] = getAimbot(currentlyTargeting).yawReal;
-                    ss.MYPLAYER[H.pitch] = getAimbot(currentlyTargeting).pitchReal;
-                }
                 log("force update?");
                 ss.SERVERSYNC();
             };
