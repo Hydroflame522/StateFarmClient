@@ -1575,7 +1575,9 @@ debug mode).`},
             initModule({ location: tp.clientTab.pages[0], title: "Hide at Startup", storeAs: "hideAtStartup", bindLocation: tp.clientTab.pages[1], defaultValue: false,});
             initModule({ location: tp.clientTab.pages[0], title: "No Console Logs", storeAs: "consoleLogs", bindLocation: tp.clientTab.pages[1], defaultValue: false,});
             initModule({ location: tp.clientTab.pages[0], title: "Pop-ups", storeAs: "popups", bindLocation: tp.clientTab.pages[1], defaultValue: true, });
-            tp.clientTab.pages[0].addSeparator();
+	    tp.clientTab.pages[0].addSeparator();
+	    initModule({ location: tp.clientTab.pages[0], title: "Use latest keys", storeAs: "latestKeys", bindLocation: tp.clientTab.pages[1], defaultValue: false, });
+	    tp.clientTab.pages[0].addSeparator();
             initModule({ location: tp.clientTab.pages[0], title: "Panic", storeAs: "panic", bindLocation: tp.clientTab.pages[1], button: "EXIT!", clickFunction: function () { if (extract("enablePanic")) { unsafeWindow.location.replace(extract("panicURL")) } }, defaultBind: "X", enableConditions: [["enablePanic", true]], });
             initFolder({ location: tp.clientTab.pages[0], title: "Panic Options", storeAs: "panicFolder", });
                 initModule({ location: tp.panicFolder, title: "Enable", storeAs: "enablePanic", bindLocation: tp.clientTab.pages[1], defaultValue: false, });
@@ -4957,7 +4959,7 @@ z-index: 999999;
 
             let hash, onlineClientKeys;
             hash = L.CryptoJS.SHA256(originalJS).toString(L.CryptoJS.enc.Hex); // eslint-disable-line
-            onlineClientKeys = getVardata(hash);
+            onlineClientKeys = extract("latestKeys") ? fetchTextContent(clientKeysURL + "latest.json") : getVardata(hash);
 
             if (onlineClientKeys == "value_undefined" || onlineClientKeys == null) {
                 let userInput = prompt(`Valid VarData could not be retrieved online. This could be due to a conflicting script or your script is out of date. Enter VarData if you have it, or alternatively the hash filename of a previous game js to attempt to load that. Join the StateFarm Network Discord server to generate VarData! Link: ${discordURL} Perform command "sf.vardata" in the bot channel. Hash: ${hash}`, '');
