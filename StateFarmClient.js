@@ -219,7 +219,7 @@ let attemptedInjection = false;
             } catch (error) {
                 log("couldnt fetch greasyfork info :(");
             };
-            
+
             let oldVersion = load("version");
             save("version", version);
 
@@ -227,10 +227,10 @@ let attemptedInjection = false;
                 const maxAttempts = 30;
                 const interval = 500;
                 let attempts = 0;
-            
+
                 const checkForElement = function() {
                     const existingContainer = document.querySelector('.secondary-aside-wrap');
-            
+
                     if (existingContainer) {
                         log('Element found:', existingContainer);
                         createAndAppendCommitHistoryBox(existingContainer);
@@ -242,11 +242,11 @@ let attemptedInjection = false;
                         log('Element not found after maximum attempts');
                     }
                 };
-            
+
                 const createAndAppendCommitHistoryBox = function(existingContainer) {
                     let commitHistoryBox = document.createElement('div');
                     commitHistoryBox.className = 'media-tabs-wrapper box_relative border-blue5 roundme_sm bg_blue6 common-box-shadow ss_margintop_sm';
-                
+
                     let commitHistoryContent = `
                     <div class="media-tab-container display-grid align-items-center gap-sm bg_blue3">
                         <h4 class="common-box-shadow text-shadow-black-40 text_white dynamic-text" style="display: flex; align-items: center;">
@@ -265,13 +265,13 @@ let attemptedInjection = false;
                         <div class="tab-content ss_paddingright ss_paddingleft">
                             <div class="news-container f_col v_scroll" style="height: 20em; overflow-y: auto;">
                     `;
-                
+
                     fetch(commitFeedURL).then(response => {
                         if (response.ok) return response.json();
                         else throw new Error('Failed to fetch commit history contents');
                     }).then(commitHistory => {
                         log("retrieved: commit history", commitHistory);
-                
+
                         if (oldVersion !== version) {
                             commitHistoryContent += `
                                 <a href="${githubURL}" target="_blank" style="text-decoration: none;">
@@ -281,7 +281,7 @@ let attemptedInjection = false;
                                 </a>
                             `;
                         }
-                
+
                         if (scriptInfo && scriptInfo.version && scriptInfo.version !== version) {
                             commitHistoryContent += `
                             <a href="${downloadURL}" target="_blank" style="text-decoration: none;">
@@ -291,14 +291,14 @@ let attemptedInjection = false;
                             </a>
                             `;
                         }
-                
+
                         commitHistory.forEach(commit => {
                             const commitDate = new Date(commit.commit.author.date).toLocaleString();
                             const authorProfileURL = `https://github.com/${commit.author.login}`; //replace with actual url if available
                             const messageParts = commit.commit.message.split('\n\n', 2); //split by the first occurrence of '\n\n'
                             const title = messageParts[0]; //title part of the message
                             const description = messageParts[1] || ''; //description part of the message, defaults to empty string if not present
-                
+
                             commitHistoryContent += `
                             <div class="commit-item" style="padding: 0.2em 0.3em; background-color: #95e2fe; border-bottom: 2px solid #0B93BD;">
                                 <div style="display: flex; align-items: flex-start;">
@@ -318,29 +318,29 @@ let attemptedInjection = false;
                             </div>
                             `;
                         });
-                
+
                         commitHistoryContent += `
                             </div>
                         </div>
                     </div>
                     `;
-                
+
                     commitHistoryBox.innerHTML = commitHistoryContent;
                     existingContainer.appendChild(commitHistoryBox);
                     }).catch(error => {
                         log('Error:', error);
                     });
                 };
-                
-            
+
+
                 checkForElement();
                         };
-            
+
             (async () => {
                 try {
                     var response = await fetch(sfxURL);
                     if (!response.ok) throw new Error('Failed to fetch folder contents (custom sfx)');
-            
+
                     var data = await response.json();
                     data.forEach((file) => {
                         retrievedSFX.push({ text: file.name.replace(".zip", ""), value: btoa(file.download_url) });
@@ -348,7 +348,7 @@ let attemptedInjection = false;
                     //1ust i hated your implementation and this is me showing that i reached my breaking point.
                     var response = await fetch(skyboxListURL); //when the nice guy loses his temper
                     if (!response.ok) throw new Error('Failed to fetch folder contents (custom skyboxes)');
-            
+
                     var data = await response.json();
                     data.forEach((folder) => {
                         if (folder.type === "dir") {
@@ -364,7 +364,7 @@ let attemptedInjection = false;
                             });
                         };
                     });
-            
+
                     initMenu(false);
                     tp.mainPanel.hidden = extract("hideAtStartup");
                 } catch (error) {
@@ -372,16 +372,18 @@ let attemptedInjection = false;
                     initMenu(false);
                     tp.mainPanel.hidden = extract("hideAtStartup");
                 };
-            })();            
+            })();
         });
 
     };
-    
+
     //INIT VARS
     const inbuiltPresets = { //Don't delete onlypuppy7's Config
         "onlypuppy7's Config": `sfChatNotifications>true<sfChatNotificationSound>true<sfChatAutoStart>true<sfChatInvitations>true<aimbot>true<aimbotTargetMode>0<aimbotVisibilityMode>1<aimbotRightClick>true<silentAimbot>false<aimbSemiSilent>false<noWallTrack>false<prediction>true<antiBloom>true<antiSwitch>true<oneKill>true<aimbotMinAngle>174<aimbotAntiSnap>0.75<antiSneak>1.8<aimbotColor>"#0000ff"<autoRefill>true<smartRefill>true<enableAutoFire>true<autoFireType>3<autoFireAccuracy>0<grenadeMax>true<grenadePower>1<playerESP>true<tracers>true<chams>false<nametags>true<targets>false<predictionESP>false<tracersType>0<tracersColor1>"#ff0000"<tracersColor2>"#00ff00"<tracersColor3>"#ffffff"<tracersColor1to2>5<tracersColor2to3>15<predictionESPColor>"#ff0000"<ammoESP>true<ammoTracers>false<ammoESPRegime>1<ammoESPColor>"#ffff00"<grenadeESP>true<grenadeTracers>false<grenadeESPRegime>2<grenadeESPColor>"#00ffff"<lookTracers>false<lookTracersRGI1>false<lookTracersColor>"#00ffff"<fov>120<zoom>15<perspective>0<perspectiveAlpha>false<perspectiveY>0.5<perspectiveZ>2<freecam>false<wireframe>false<particleSpeedMultiplier>0.35<eggSize>1<setDetail>0<enableTextures>true<renderDelay>0<revealBloom>true<showLOS>true<showMinAngle>false<highlightLeaderboard>true<showCoordinates>true<radar>false<playerStats>true<playerInfo>true<gameInfo>true<showStreams>true<chatExtend>true<chatHighlight>false<maxChat>10<disableChatFilter>true<unfilterNames>true<chatFilterBypass>false<tallChat>false<fakeMessageID>12<fakeMessageText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre94 On Top! "<fakeMessageBold>false<spamChat>false<spamChatDelay>500<spamChatText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre71 On Top! "<mockMode>false<announcer>false<autoEZ>false<cheatAccuse>false<joinMessages>true<leaveMessages>true<publicBroadcast>false<joinLeaveBranding>false<whitelist>"User-1, User-2"<enableWhitelistAimbot>false<enableWhenNoneVisible>false<enableWhitelistTracers>false<whitelistESPType>0<whitelistColor>"#e80aac"<blacklist>"User-1, User-2"<enableBlacklistAimbot>false<enableBlacklistTracers>false<blacklistESPType>0<blacklistColor>"#00ff00"<bunnyhop>true<autoWalk>false<autoStrafe>false<autoJump>false<autoJumpDelay>1<autoWeapon>0<autoGrenade>false<autoJoin>false<joinCode>"CODE"<useCustomName>false<usernameAutoJoin>"ЅtateFarmer"<autoRespawn>false<autoTeam>0<gameBlacklist>false<gameBlacklistCodes>""<leaveEmpty>false<autoLeave>false<autoLeaveDelay>300<autoGamemode>0<autoRegion>0<eggColor>0<autoStamp>0<autoHat>0<skybox>9<randomSkyBox>false<randomSkyBoxInterval>3<legacyModels>true<filter>0<gunPosition>0<muteGame>false<distanceMult>1.5<customSFX1>3<customSFX2>4<customSFX3>1<replaceLogo>true<titleAnimation>true<themeType>5<partyLightsEnabled>true<partyLightsIntensity>3.6999999999999997<loginEmailPass>"ssss"<loginDatabaseSelection>1<autoLogin>0<accountGmail>"example (NO @gmail.com)"<accountPass>"password69"<accountRecordsLogging>false<shellPrintKey>""<adBlock>true<spoofVIP>false<noAnnoyances>true<noTrack>true<antiAFK>false<quickRespawn>true<statefarmUpdates>true<replaceFeeds>true<customBadges>true<unlockSkins>false<adminSpoof>false<autoUnban>true<autoChickenWinner>true<customMacro>"log('cool');"<autoMacro>false<silentRoll>false<enableSeizureX>false<amountSeizureX>2<enableSeizureY>false<amountSeizureY>2<vardataFallback>0<vardataType>0<vardataCustom>"{}"<hideAtStartup>false<consoleLogs>false<popups>true<tooltips>true<enablePanic>false<panicURL>"https://classroom.google.com/"<selectedPreset>0<debug>false`,
         "OP7 + Server Hopper": `sfChatNotifications>true<sfChatNotificationSound>true<sfChatAutoStart>true<aimbot>true<aimbotTargetMode>0<aimbotVisibilityMode>1<aimbotRightClick>true<silentAimbot>false<aimbSemiSilent>false<noWallTrack>false<prediction>true<antiBloom>true<antiSwitch>true<oneKill>true<aimbotMinAngle>174<aimbotAntiSnap>0.75<antiSneak>1.8<aimbotColor>"#0000ff"<autoRefill>true<smartRefill>true<enableAutoFire>true<autoFireType>3<grenadeMax>true<playerESP>true<tracers>true<chams>false<nametags>true<targets>false<predictionESP>false<tracersType>0<tracersColor1>"#ff0000"<tracersColor2>"#00ff00"<tracersColor3>"#ffffff"<tracersColor1to2>5<tracersColor2to3>15<predictionESPColor>"#ff0000"<ammoESP>true<ammoTracers>false<ammoESPRegime>1<ammoESPColor>"#ffff00"<grenadeESP>true<grenadeTracers>false<grenadeESPRegime>2<grenadeESPColor>"#00ffff"<lookTracers>false<lookTracersRGI1>false<lookTracersColor>"#00ffff"<fov>120<zoom>15<perspective>0<perspectiveAlpha>false<perspectiveY>0.5<perspectiveZ>2<freecam>false<wireframe>false<particleSpeedMultiplier>0.35<eggSize>1<setDetail>0<enableTextures>true<renderDelay>0<revealBloom>true<showLOS>true<showMinAngle>false<highlightLeaderboard>true<showCoordinates>true<radar>false<playerStats>true<playerInfo>true<gameInfo>true<showStreams>true<chatExtend>true<chatHighlight>false<maxChat>10<disableChatFilter>true<unfilterNames>true<chatFilterBypass>false<tallChat>false<antiAFK>false<spamChat>false<fakeMessageID>12<fakeMessageText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre94 On Top! "<fakeMessageBold>false<spamChatDelay>500<spamChatText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre71 On Top! "<mockMode>false<announcer>false<autoEZ>false<cheatAccuse>false<joinMessages>true<leaveMessages>true<publicBroadcast>false<joinLeaveBranding>false<whitelist>"User-1, User-2"<enableWhitelistAimbot>false<enableWhenNoneVisible>false<enableWhitelistTracers>false<whitelistESPType>0<whitelistColor>"#e80aac"<blacklist>"User-1, User-2"<enableBlacklistAimbot>false<enableBlacklistTracers>false<blacklistESPType>0<blacklistColor>"#00ff00"<bunnyhop>true<autoWalk>false<autoStrafe>false<autoJump>false<autoJumpDelay>1<autoWeapon>0<autoGrenade>false<autoJoin>false<joinCode>"CODE"<useCustomName>false<usernameAutoJoin>"ЅtateFarmer"<autoRespawn>false<autoTeam>0<gameBlacklist>false<gameBlacklistCodes>""<leaveEmpty>true<autoLeave>true<autoLeaveDelay>150<autoGamemode>5<autoRegion>8<eggColor>0<autoStamp>0<autoHat>0<skybox>9<legacyModels>true<filter>2<gunPosition>0<muteGame>false<distanceMult>1.5<customSFX1>3<customSFX2>4<customSFX3>1<replaceLogo>true<titleAnimation>true<themeType>5<loginEmailPass>"ssss"<loginDatabaseSelection>1<autoLogin>0<accountGmail>"example (NO @gmail.com)"<accountPass>"password69"<accountRecordsLogging>false<shellPrintKey>""<adBlock>true<spoofVIP>false<noAnnoyances>true<noTrack>true<quickRespawn>true<statefarmUpdates>true<replaceFeeds>true<customBadges>true<unlockSkins>false<adminSpoof>false<autoUnban>true<autoChickenWinner>true<customMacro>"log('cool');"<autoMacro>false<silentRoll>false<enableSeizureX>false<amountSeizureX>2<enableSeizureY>false<amountSeizureY>2<hideAtStartup>false<consoleLogs>false<popups>true<enablePanic>false<panicURL>"https://classroom.google.com/"<selectedPreset>0<debug>false`,
         "OP7 + Server Hopper + Stream Stealth": `sfChatNotifications>true<sfChatNotificationSound>true<sfChatAutoStart>true<aimbot>true<aimbotTargetMode>0<aimbotVisibilityMode>1<aimbotRightClick>true<silentAimbot>true<aimbSemiSilent>false<noWallTrack>false<prediction>true<antiBloom>true<antiSwitch>false<oneKill>false<aimbotMinAngle>174<aimbotAntiSnap>0.75<antiSneak>1.8<aimbotColor>"#0000ff"<autoRefill>true<smartRefill>true<enableAutoFire>true<autoFireType>3<grenadeMax>true<playerESP>false<tracers>false<chams>false<nametags>true<targets>false<predictionESP>false<tracersType>0<tracersColor1>"#ff0000"<tracersColor2>"#00ff00"<tracersColor3>"#ffffff"<tracersColor1to2>5<tracersColor2to3>15<predictionESPColor>"#ff0000"<ammoESP>false<ammoTracers>false<ammoESPRegime>1<ammoESPColor>"#ffff00"<grenadeESP>false<grenadeTracers>false<grenadeESPRegime>2<grenadeESPColor>"#00ffff"<lookTracers>false<lookTracersRGI1>false<lookTracersColor>"#00ffff"<fov>120<zoom>15<perspective>0<perspectiveAlpha>false<perspectiveY>0.5<perspectiveZ>2<freecam>false<wireframe>false<particleSpeedMultiplier>0.35<eggSize>1<setDetail>0<enableTextures>true<renderDelay>0<revealBloom>false<showLOS>false<showMinAngle>false<highlightLeaderboard>true<showCoordinates>false<radar>false<playerStats>false<playerInfo>false<gameInfo>true<showStreams>false<chatExtend>true<chatHighlight>false<maxChat>10<disableChatFilter>true<unfilterNames>true<chatFilterBypass>false<tallChat>false<antiAFK>false<spamChat>false<fakeMessageID>1<fakeMessageText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre95 On Top! "<fakeMessageBold>false<spamChatDelay>500<spamChatText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre95 On Top! "<mockMode>false<announcer>false<autoEZ>false<cheatAccuse>false<joinMessages>true<leaveMessages>true<publicBroadcast>false<joinLeaveBranding>false<whitelist>"User-1, User-2"<enableWhitelistAimbot>false<enableWhenNoneVisible>false<enableWhitelistTracers>false<whitelistESPType>0<whitelistColor>"#e80aac"<blacklist>"User-1, User-2"<enableBlacklistAimbot>false<enableBlacklistTracers>false<blacklistESPType>0<blacklistColor>"#00ff00"<bunnyhop>true<autoWalk>false<autoStrafe>false<autoJump>false<autoJumpDelay>1<autoWeapon>0<autoGrenade>false<autoJoin>false<joinCode>"CODE"<useCustomName>true<usernameAutoJoin>"[sfc] onlypuppy7"<autoRespawn>false<autoTeam>0<gameBlacklist>false<gameBlacklistCodes>""<leaveEmpty>true<autoLeave>true<autoLeaveDelay>150<autoGamemode>5<autoRegion>8<eggColor>0<autoStamp>0<autoHat>0<skybox>9<legacyModels>true<filter>true<gunPosition>true<muteGame>false<distanceMult>1.5<customSFX1>3<customSFX2>4<customSFX3>1<replaceLogo>true<titleAnimation>false<themeType>5<loginEmailPass>"ssss"<loginDatabaseSelection>1<autoLogin>0<accountGmail>"example (NO @gmail.com)"<accountPass>"password69"<accountRecordsLogging>false<shellPrintKey>""<adBlock>true<spoofVIP>false<noAnnoyances>true<noTrack>true<quickRespawn>true<statefarmUpdates>true<replaceFeeds>true<customBadges>true<unlockSkins>false<adminSpoof>false<autoUnban>true<autoChickenWinner>true<customMacro>"log('cool');"<autoMacro>false<silentRoll>false<enableSeizureX>false<amountSeizureX>2<enableSeizureY>false<amountSeizureY>2<hideAtStartup>false<consoleLogs>false<popups>false<enablePanic>false<panicURL>"https://classroom.google.com/"<selectedPreset>1<debug>false`,
+        "Doeshotter's Crackshot Config": `sfChatNotifications>false<sfChatNotificationSound>false<sfChatAutoStart>false<sfChatInvitations>true<aimbot>true<aimbotTargetMode>0<aimbotVisibilityMode>2<aimbotRightClick>true<silentAimbot>true<aimbSemiSilent>false<noWallTrack>false<prediction>true<antiBloom>true<antiSwitch>true<oneKill>false<aimbotMinAngle>7<antiSneak>0<aimbotAntiSnap>0<autoRefill>true<smartRefill>true<enableAutomatic>true<enableAutoFire>true<autoFireType>3<autoFireAccuracy>0.15000000000000002<grenadeMax>false<grenadePower>1<playerESP>true<tracers>false<chams>false<trajectories>true<predictionESP>false<nametags>true<nametagInfo>true<nametagInfoInterval>14<aimbotColor>"#ff0000"<aimbotRainbow>false<tracersType>2<tracersColor1Rainbow>true<tracersColor1>"#ff0000"<tracersColor2>"#0000ff"<tracersColor3>"#ffffff"<tracersColor1to2>5<tracersColor2to3>15<predictionESPColor>"#ff0000"<predictionESPColorRainbow>false<ammoESP>false<ammoTracers>false<ammoESPRegime>0<ammoESPColor>"#ffff00"<grenadeESP>false<grenadeTracers>false<grenadeESPRegime>0<grenadeESPColor>"#00ffff"<lookTracers>false<lookTracersRGI1>false<lookTracersColor>"#00ffff"<fov>72<zoom>15<perspective>0<perspectiveAlpha>false<perspectiveY>0.5<perspectiveZ>2<freecam>false<wireframe>false<particleSpeedMultiplier>1<eggSize>1<setDetail>0<enableTextures>true<renderDelay>0<revealBloom>true<showLOS>true<showMinAngle>false<highlightLeaderboard>false<showCoordinates>false<radar>false<playerStats>false<playerInfo>false<gameInfo>false<showStreams>false<minimap>false<minimapZoom>5<minimapSize>1<chatExtend>false<chatHighlight>false<maxChat>5<disableChatFilter>false<unfilterNames>false<chatFilterBypass>false<tallChat>false<fakeMessageID>1<fakeMessageText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre147 On Top! "<fakeMessageBold>false<spamChat>false<spamChatDelay>500<spamChatText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.1-pre147 On Top! "<mockMode>false<announcer>false<autoEZ>false<cheatAccuse>false<joinMessages>false<leaveMessages>false<publicBroadcast>false<joinLeaveBranding>false<whitelist>"User-1, User-2"<enableWhitelistAimbot>false<enableWhenNoneVisible>false<enableWhitelistTracers>false<whitelistESPType>0<whitelistColor>"#e80aac"<blacklist>"User-1, User-2"<enableBlacklistAimbot>false<enableBlacklistTracers>false<blacklistESPType>0<blacklistColor>"#00ff00"<bunnyhop>true<autoWalk>false<autoStrafe>false<autoJump>false<autoJumpDelay>1<autoWeapon>0<autoGrenade>false<autoJoin>false<joinCode>"CODE"<useCustomName>false<usernameAutoJoin>"ЅtateFarmer"<autoRespawn>false<autoTeam>0<gameBlacklist>false<gameBlacklistCodes>""<leaveEmpty>false<autoLeave>false<autoLeaveDelay>300<autoGamemode>0<autoRegion>0<eggColor>0<autoStamp>0<autoHat>0<skybox>true<randomSkyBox>false<randomSkyBoxInterval>3<legacyModels>false<filter>true<gunPosition>true<muteGame>false<distanceMult>1<customSFX1>true<customSFX2>true<customSFX3>true<replaceLogo>false<titleAnimation>false<themeType>5<partyLightsEnabled>false<partyLightsIntensity>0.5<loginEmailPass>"ex@gmail.com:passwd"<loginDatabaseSelection>0<autoLogin>0<accountGmail>"example (NO @gmail.com)"<accountPass>"password69"<accountRecordsLogging>false<shellPrintKey>""<adBlock>false<spoofVIP>false<noAnnoyances>true<noTrack>true<antiAFK>true<quickRespawn>true<statefarmUpdates>true<replaceFeeds>true<customBadges>true<unlockSkins>true<adminSpoof>false<autoUnban>true<autoChickenWinner>false<customMacro>"log('wow ur cool!');"<autoMacro>true<silentRoll>false<enableSeizureX>false<amountSeizureX>2<enableSeizureY>false<amountSeizureY>2<vardataFallback>0<vardataType>0<vardataCustom>"{}"<hideAtStartup>false<consoleLogs>false<popups>true<tooltips>true<enablePanic>false<panicURL>"https://classroom.google.com/"<selectedPreset>0<debug>false`,
+        // ^^ no idea how to fix blue filter being on, its whatever
         // "onlypuppy7's Silent Config": `aimbot>true<aimbotTargetMode>1<aimbotVisibilityMode>1<aimbotRightClick>true<silentAimbot>true<noWallTrack>false<prediction>true<antiBloom>true<antiSwitch>false<oneKill>false<aimbotMinAngle>360<aimbotAntiSnap>0.77<antiSneak>1.8<aimbotColor>"#0000ff"<autoRefill>true<smartRefill>true<enableAutoFire>true<autoFireType>3<grenadeMax>true<playerESP>true<tracers>true<chams>false<nametags>true<targets>true<tracersType>0<tracersColor1>"#ff0000"<tracersColor2>"#00ff00"<tracersColor3>"#ffffff"<tracersColor1to2>5<tracersColor2to3>15<ammoESP>true<ammoTracers>false<ammoESPRegime>1<ammoESPColor>"#ffff00"<grenadeESP>true<grenadeTracers>false<grenadeESPRegime>0<grenadeESPColor>"#00ffff"<fov>120<zoom>15<freecam>false<wireframe>false<eggSize>1<setDetail>0<enableTextures>true<renderDelay>0<revealBloom>true<showLOS>true<showMinAngle>false<highlightLeaderboard>false<showCoordinates>true<radar>false<playerStats>true<playerInfo>true<gameInfo>true<showStreams>true<chatExtend>true<chatHighlight>false<maxChat>10<disableChatFilter>true<chatFilterBypass>false<tallChat>false<antiAFK>true<spamChat>false<spamChatDelay>500<spamChatText>"dsc.gg/s𝖿network: ЅtateFarm Client v3.4.0-pre19 On Top! "<mockMode>false<announcer>false<autoEZ>false<cheatAccuse>false<joinMessages>true<leaveMessages>true<publicBroadcast>false<joinLeaveBranding>false<whitelist>"User-1, User-2"<enableWhitelistAimbot>false<enableWhitelistTracers>false<whitelistESPType>0<whitelistColor>"#e80aac"<blacklist>"User-1, User-2"<enableBlacklistAimbot>false<enableBlacklistTracers>false<blacklistESPType>0<blacklistColor>"#00ff00"<bunnyhop>true<autoWalk>false<autoStrafe>false<autoJump>false<autoJumpDelay>1<autoWeapon>0<autoGrenade>false<autoJoin>false<joinCode>"CODE"<useCustomName>false<usernameAutoJoin>"ЅtateFarmer"<autoRespawn>false<autoTeam>0<gameBlacklist>false<gameBlacklistCodes>""<leaveEmpty>false<autoLeave>false<autoLeaveDelay>300<autoGamemode>0<autoRegion>0<eggColor>0<autoStamp>0<autoHat>0<muteGame>false<distanceMult>1<customSFX>0<adBlock>true<spoofVIP>false<unlockSkins>false<adminSpoof>false<autoUnban>true<silentRoll>false<enableSeizureX>false<amountSeizureX>2<enableSeizureY>false<amountSeizureY>2<popups>true<replaceLogo>true<titleAnimation>true<themeType>5<enablePanic>false<panicURL>"https://classroom.google.com/"<selectedPreset>0<debug>false`,
         "Hydroflame521's Config": `aimbot>true<aimbotTargetMode>0<aimbotVisibilityMode>0<aimbotRightClick>true<silentAimbot>false<noWallTrack>true<prediction>true<antiBloom>true<antiSwitch>true<oneKill>true<aimbotMinAngle>30<aimbotAntiSnap>0.77<antiSneak>1.8<aimbotColor>"#0000ff"<autoRefill>true<smartRefill>true<enableAutoFire>true<autoFireType>3<grenadeMax>true<playerESP>true<tracers>true<chams>false<nametags>true<targets>true<tracersType>1<tracersColor1>"#b200ff"<tracersColor2>"#ff0000"<tracersColor3>"#00ff4b"<tracersColor1to2>3<tracersColor2to3>20<ammoESP>true<ammoTracers>false<ammoESPRegime>1<ammoESPColor>"#ffff00"<grenadeESP>true<grenadeTracers>false<grenadeESPRegime>0<grenadeESPColor>"#00ffff"<fov>120<zoom>15<freecam>false<wireframe>false<eggSize>1<setDetail>0<enableTextures>true<renderDelay>0<revealBloom>true<showLOS>true<showMinAngle>false<highlightLeaderboard>false<showCoordinates>true<radar>false<playerStats>true<playerInfo>true<gameInfo>true<showStreams>true<chatExtend>true<chatHighlight>false<maxChat>10<disableChatFilter>true<chatFilterBypass>false<tallChat>false<antiAFK>false<spamChat>false<spamChatDelay>1440<spamChatText>"Live now at twitch.tv/ЅtateFarmNetwork! "<mockMode>false<announcer>false<autoEZ>false<cheatAccuse>false<joinMessages>true<leaveMessages>true<publicBroadcast>false<joinLeaveBranding>false<whitelist>"User-1, User-2"<enableWhitelistAimbot>false<enableWhitelistTracers>false<whitelistESPType>0<whitelistColor>"#e80aac"<blacklist>"User-1, User-2"<enableBlacklistAimbot>false<enableBlacklistTracers>false<blacklistESPType>0<blacklistColor>"#00ff00"<bunnyhop>false<autoWalk>false<autoStrafe>false<autoJump>false<autoJumpDelay>1<autoWeapon>0<autoGrenade>false<autoJoin>false<joinCode>"CODE"<useCustomName>false<usernameAutoJoin>"CaptainShell74"<autoRespawn>false<autoTeam>0<gameBlacklist>false<gameBlacklistCodes>""<leaveEmpty>false<autoLeave>false<autoLeaveDelay>240<autoGamemode>0<autoRegion>0<eggColor>0<autoStamp>0<autoHat>0<muteGame>false<distanceMult>0.59<customSFX>true<adBlock>true<spoofVIP>false<unlockSkins>false<adminSpoof>false<autoUnban>true<silentRoll>false<enableSeizureX>false<amountSeizureX>2<enableSeizureY>false<amountSeizureY>0.04772456526919999<popups>true<replaceLogo>false<titleAnimation>false<themeType>7<enablePanic>false<panicURL>"https://classroom.google.com/"<selectedPreset>0<debug>false`,
         // "Server Hopper + Non-Silent": `aimbot>true<aimbotTargetMode>0<aimbotVisibilityMode>0<aimbotRightClick>true<silentAimbot>false<noWallTrack>true<prediction>true<antiBloom>true<antiSwitch>true<oneKill>true<aimbotMinAngle>30<aimbotAntiSnap>0.77<antiSneak>1.8<aimbotColor>"#0000ff"<autoRefill>true<smartRefill>true<enableAutoFire>true<autoFireType>0<grenadeMax>true<playerESP>true<tracers>true<chams>false<nametags>true<targets>true<tracersType>0<tracersColor1>"#ff0000"<tracersColor2>"#00ff00"<tracersColor3>"#ffffff"<tracersColor1to2>5<tracersColor2to3>15<ammoESP>true<ammoTracers>false<ammoESPRegime>1<ammoESPColor>"#ffff00"<grenadeESP>true<grenadeTracers>false<grenadeESPRegime>0<grenadeESPColor>"#00ffff"<fov>120<zoom>15<freecam>false<wireframe>false<eggSize>1<setDetail>0<enableTextures>true<renderDelay>0<revealBloom>true<showLOS>true<showMinAngle>false<highlightLeaderboard>false<showCoordinates>true<radar>false<playerStats>true<playerInfo>true<gameInfo>true<showStreams>true<chatExtend>true<chatHighlight>false<maxChat>10<disableChatFilter>true<chatFilterBypass>false<tallChat>false<antiAFK>true<spamChat>false<spamChatDelay>1440<spamChatText>"Live now at twitch.tv/ЅtateFarmNetwork! "<mockMode>false<announcer>false<autoEZ>false<cheatAccuse>false<joinMessages>true<leaveMessages>true<publicBroadcast>false<joinLeaveBranding>false<whitelist>"User-1, User-2"<enableWhitelistAimbot>false<enableWhitelistTracers>false<whitelistESPType>0<whitelistColor>"#e80aac"<blacklist>"User-1, User-2"<enableBlacklistAimbot>false<enableBlacklistTracers>false<blacklistESPType>0<blacklistColor>"#00ff00"<bunnyhop>true<autoWalk>false<autoStrafe>false<autoJump>false<autoJumpDelay>1<autoWeapon>0<autoGrenade>false<autoJoin>false<joinCode>"CODE"<useCustomName>false<usernameAutoJoin>"CaptainShell74"<autoRespawn>false<autoTeam>0<gameBlacklist>false<gameBlacklistCodes>""<leaveEmpty>false<autoLeave>true<autoLeaveDelay>240<autoGamemode>0<autoRegion>0<eggColor>0<autoStamp>0<autoHat>0<muteGame>false<distanceMult>0.59<customSFX>0<adBlock>true<spoofVIP>false<unlockSkins>false<adminSpoof>false<autoUnban>true<silentRoll>false<enableSeizureX>false<amountSeizureX>2<enableSeizureY>false<amountSeizureY>0.04772456526919999<popups>true<replaceLogo>true<titleAnimation>true<themeType>2<enablePanic>false<panicURL>"https://classroom.google.com/"<selectedPreset>0<debug>false`,
@@ -591,7 +593,7 @@ let attemptedInjection = false;
     };
 
     /**
-     * 
+     *
     * @param {String} colorSelectName name of the color module. Will be used for extract. EG. aimbotColor
     * @param {String} isRainbowName name of the rainbow checkbox mod. Will be used for extract.
     */
@@ -1021,7 +1023,7 @@ sniping and someone sneaks up on you
                 initModule({ location: tp.tracersFolder, title: "Color 1", storeAs: "tracersColor1", tooltip: "Static: Just stays this colour.\nProximity: Very close colour\nVisibility: Not visible.", defaultValue: "#ff0000", disableConditions: [["tracers", false], ["playerESP", false]], showConditions: [["tracersColor1Rainbow", false]], });
                 //TODO: I hate having it like that so maybe a initmodule helper func for color with creates both color opt and rainbow opt. Same with the getColors() btw ~Sq
                 //also speed customisation and shit, people love customization.
-                //-------- 
+                //--------
                 initModule({ location: tp.tracersFolder, title: "Color 2", storeAs: "tracersColor2", tooltip: "Static: (Unused)\nProximity: Moderately close colour\nVisibility: Visible.", defaultValue: "#00ff00", disableConditions: [["tracers", false], ["playerESP", false]], hideConditions: [["tracersType", "static"]], });
                 //initModule({ location: tp.tracersFolder, title: "C2 rainbow", storeAs: "tracersColor2Rainbow", tooltip: "🌈", defaultValue: true, disableConditions: [["tracers", false], ["playerESP", false]], hideConditions: [["tracersType", "static"]], });
                 //--------
@@ -1990,7 +1992,7 @@ debug mode).`},
                 label.addEventListener('mouseleave', () => {
                     tooltipElement.style.opacity = '0';
                 });
-            });            
+            });
         }, 500);
 
         menuInitiated = reset == "init" ? "init" : true;
@@ -2109,7 +2111,7 @@ debug mode).`},
         setTimeout(() => {
             promptElement.style.opacity = '1';
         }, 100);
-        setTimeout(() => { 
+        setTimeout(() => {
             promptElement.style.opacity = '0';
             setTimeout(() => {
                 deleteButton();
@@ -2126,7 +2128,7 @@ debug mode).`},
                 reloadPage();
             }, 400);
         };
-    
+
         //create vardataOverlay
         vardataOverlay = document.createElement('div');
         vardataOverlay.style.position = 'fixed';
@@ -2138,7 +2140,7 @@ debug mode).`},
         vardataOverlay.style.zIndex = '9998';
         vardataOverlay.style.opacity = '0';
         vardataOverlay.style.transition = 'opacity 0.4s ease-in-out';
-    
+
         //create vardataPopup
         vardataPopup = document.createElement('div');
         vardataPopup.style.position = 'fixed';
@@ -2159,7 +2161,7 @@ debug mode).`},
         vardataPopup.style.fontSize = '16px';
         vardataPopup.style.zIndex = '9999';
         vardataPopup.style.whiteSpace = 'pre-wrap';
-    
+
         //set vardataPopup content
         const title = "Valid VarData for this hash could not be retrieved.";
         const message = `This could be due to a conflicting script or StateFarm Client is out of date.<br>
@@ -2180,13 +2182,13 @@ You can generate VarData by using the command "sf.vardata" in the StateFarm Netw
                                <input type="text" id="vardataInput" style="flex: 1; padding: 5px; width: 250px; border: 1px solid rgba(255, 255, 255, 0.5); background-color: rgba(255, 255, 255, 0.1); color: #fff; border-radius: 5px; margin-right: 10px;">
                                <button id="submitVarData" style="padding: 5px 15px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 5px; cursor: pointer; transition: background-color 0.2s;">GO</button>
                            </div>${message2}`;
-    
+
         //create buttons
         const vardataButtonContainer = document.createElement('div');
         vardataButtonContainer.style.display = 'flex';
         vardataButtonContainer.style.justifyContent = 'space-between';
         vardataButtonContainer.style.marginTop = '10px';
-    
+
         vardataButtonsInfo.forEach(({ id, text, action }) => {
             const button = document.createElement('button');
             button.id = id;
@@ -2202,14 +2204,14 @@ You can generate VarData by using the command "sf.vardata" in the StateFarm Netw
             button.style.marginRight = '10px';
             button.style.fontSize = '12px';
             button.style.whiteSpace = 'pre-wrap';
-        
+
             button.addEventListener('click', action);
             button.addEventListener('mouseenter', () => button.style.backgroundColor = 'rgba(255, 255, 255, 0.3)');
             button.addEventListener('mouseleave', () => button.style.backgroundColor = 'rgba(255, 255, 255, 0.1)');
-        
+
             vardataButtonContainer.appendChild(button);
         });
-        
+
         vardataPopup.appendChild(vardataButtonContainer);
 
         const setButtonState = function (buttonId, isEnabled) {
@@ -2220,7 +2222,7 @@ You can generate VarData by using the command "sf.vardata" in the StateFarm Netw
                 button.style.pointerEvents = isEnabled ? 'auto' : 'none';
             }
         };
-        
+
         (setTimeout(() => {
             vardataButtonsInfo.forEach(({ id, enabled }) => {
                 setButtonState(id, enabled);
@@ -2234,12 +2236,12 @@ You can generate VarData by using the command "sf.vardata" in the StateFarm Netw
         vardataCheckboxContainer.style.alignItems = 'center';
         vardataCheckboxContainer.style.marginTop = '15px';
         vardataCheckboxContainer.style.fontSize = '16px';
-    
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = 'rememberCheckbox';
         checkbox.style.display = 'none';
-    
+
         const customCheckbox = document.createElement('span');
         customCheckbox.style.width = '20px';
         customCheckbox.style.height = '20px';
@@ -2249,18 +2251,18 @@ You can generate VarData by using the command "sf.vardata" in the StateFarm Netw
         customCheckbox.style.borderRadius = '5px';
         customCheckbox.style.marginRight = '8px';
         customCheckbox.style.cursor = 'pointer';
-    
+
         customCheckbox.addEventListener('click', () => {
             checkbox.checked = !checkbox.checked;
             change("vardataType", checkbox.checked ? 2 : 1);
             customCheckbox.style.backgroundColor = checkbox.checked ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.1)';
         });
-    
+
         vardataCheckboxContainer.appendChild(customCheckbox);
         vardataCheckboxContainer.appendChild(checkbox);
         vardataCheckboxContainer.appendChild(document.createTextNode('Remember until next hash'));
         vardataPopup.appendChild(vardataCheckboxContainer);
-    
+
         document.body.appendChild(vardataOverlay);
         document.body.appendChild(vardataPopup);
 
@@ -2274,7 +2276,7 @@ You can generate VarData by using the command "sf.vardata" in the StateFarm Netw
             const error = function () {
                 createPopup("Inputted VarData isn't valid.", "error");
             };
-            
+
             try {
                 let converted = JSON.parse(inputValue);
                 if (converted.vars && converted.checksum) {
@@ -2295,7 +2297,7 @@ You can generate VarData by using the command "sf.vardata" in the StateFarm Netw
                 submitButton.click();
             }
         });
-    
+
         //fade anims
         setTimeout(() => {
             vardataOverlay.style.opacity = '1';
@@ -3162,7 +3164,7 @@ z-index: 999999;
             const month = new Date().getMonth();
             if (replacementLogoHalloweenURL && replacementLogoHalloweenURL !== "" && month == 9) imgURL = replacementLogoHalloweenURL;
             if (replacementLogoChristmasURL && replacementLogoChristmasURL !== "" && month == 11) imgURL = replacementLogoChristmasURL;
-            
+
             for (let i = 0; i < images.length; i++) {
                 const src = images[i].getAttribute('src');
                 if (src && src.includes('img/logo.svg')) {
@@ -3397,7 +3399,7 @@ z-index: 999999;
                 log("Error in anonymous function:", error);
             }
         };
-    
+
         F[name] = unsafeWindow[funcName];
         functionNames[name] = funcName
     };
@@ -3956,7 +3958,7 @@ z-index: 999999;
                     miniCamera.parent = ss.MYPLAYER[H.actor][H.mesh];
                 };
                 miniCamera._skipRendering = false;
-                
+
                 let cameraScale = extract("minimapZoom");
 
                 miniCamera.orthoLeft = -cameraScale;
@@ -4957,7 +4959,7 @@ z-index: 999999;
         // let targetPosition = usePrediction ? predictPosition(target) : target[H.actor][H.mesh].position;
 
         let directionVector = getDirectionVectorFacingTarget(targetPosition, true);
-        
+
         //NOTE: i dont really know HOW good this is of a fix! at least it will only affect aimbot and not anything else :pensive:
         directionVector.x = -directionVector.x;
         directionVector.y = -directionVector.y;
@@ -5400,7 +5402,7 @@ z-index: 999999;
             };
         });
         createAnonFunction('onConnectFail', function (ERRORCODE, ERRORARRAY) {
-            const terminationMessage = findKeyByValue(ERRORARRAY, ERRORCODE); //don't want to fuck with errorString so here's a new var! 
+            const terminationMessage = findKeyByValue(ERRORARRAY, ERRORCODE); //don't want to fuck with errorString so here's a new var!
             if (ERRORCODE !== ERRORARRAY.mainMenu) {
                 errorString = terminationMessage;
                 log("StateFarm has detected a connection error...", errorString, ERRORCODE, ERRORARRAY);
@@ -5467,26 +5469,26 @@ z-index: 999999;
             } else {
                 if (msg !== lastSentMessage) { //not spammed or afked
                     //NOTE: never, NEVER, never under any otherworldly circumstances use Notepad++ for editing nested stuff like this. IT WILL FUCK UP THE FORMATTING
-			//ITS STILL FUCKED UP IN THE GH EDITOR WTF PLEASE END ME 
+			//ITS STILL FUCKED UP IN THE GH EDITOR WTF PLEASE END ME
 			//TODO: FIX THIS FUCKING FORMATTING fuckfuckFUCK
                     if(extract("chatFilterBypass")) msg=msg.replaceAll("fuck", "ꬵսсk"); //special case bc they check f.ck; this basically just gets the f from the nonexacts.
                     if (extract("chatFilterBypass") && ss.isBadWord(msg)) { //apply filter bypass
-                        //#freedomOfSpeech #againstInternetCensorship 
-                        //Bl*e W*zard D*gital will not c*nsor me!!!!! 
+                        //#freedomOfSpeech #againstInternetCensorship
+                        //Bl*e W*zard D*gital will not c*nsor me!!!!!
     			        const exactLookAlikes = {
 	    		            //(almost) exact lookalikes, will make it look better if it is enough
-		    	            'a': 'а', 'c': 'с', 'e': 'е', 
+		    	            'a': 'а', 'c': 'с', 'e': 'е',
 			                'h': 'հ', 'i': 'і', 'j': 'ј',
 			                'n': '𝗇', 'o': 'о', 'p': 'р',
     			            'q': 'q', 'u': 'ս',  'w': 'ԝ',
 	    		            'y': 'у',
     		    	        //uppercase
 	    		            'B': 'В', 'D': 'ꓓ', 'E': 'Е',
-    	    		        'H': 'Η', 'I': 'І', 'J': 'Ј', 
+    	    		        'H': 'Η', 'I': 'І', 'J': 'Ј',
 	    	    	        'U': '𐓎',
 		    	            'V': 'ⴸ', 'W': 'Ԝ', 'X': 'Χ', 'Y': 'Υ',
-			                'Z': 'Ζ', 
-    			        }; 
+			                'Z': 'Ζ',
+    			        };
                         const lookAlikes = {
                             //nvm, found this complete list on reddit: https://www.reddit.com/r/Unicode/comments/gpgmb7/unique_unicode_chars_that_look_the_exact_same_as/
 				//should literally cover 100% of the thing now, still keeping fallback though
@@ -5500,25 +5502,25 @@ z-index: 999999;
 		        	        'l': 'ⅼ', 'm': 'ｍ', 'r': '𝗋', 's': '𐑈',
 			                't': '𝚝', 'v': '∨',
     	    		        'x': 'ⅹ',  'z': '𝗓', 'A': '𐊠',
-	        		        'C': '𐊢', 
+	        		        'C': '𐊢',
     		          	    'F': '𐊇', 'G': 'Ԍ', 'K': 'Κ', 'L': 'Ⅼ', 'M': 'Μ',
 	    	    	        'N': 'Ν', 'O': 'Ο', 'P': 'Ρ', 'Q': '𝖰',
-    	    	    	    'R': '𖼵', 'S': 'Ѕ', 'T': 'Τ', 
+    	    	    	    'R': '𖼵', 'S': 'Ѕ', 'T': 'Τ',
                         };
                         let onlyReplace = msg;
 	    	            //exact
 		                for (let char in exactLookAlikes) {
                             //replace all chars with lookalikes
-		    	            onlyReplace = onlyReplace.replaceAll(char, exactLookAlikes[char]); 
+		    	            onlyReplace = onlyReplace.replaceAll(char, exactLookAlikes[char]);
                         };
     		            //did that work?
 	    	            if(ss.isBadWord(onlyReplace)){
 		    	            log("chatFilterBypass: exacts were not enough, trying full...");
     		    	        for (let char in lookAlikes) {
-	    		                onlyReplace = onlyReplace.replaceAll(char, lookAlikes[char]); 
+	    		                onlyReplace = onlyReplace.replaceAll(char, lookAlikes[char]);
 		    	            };
     		            };
-                        if(!ss.isBadWord(onlyReplace)){ 
+                        if(!ss.isBadWord(onlyReplace)){
                         //did the lookalike replace do the job? Set it as the new message
 		        	    log("chatFilterBypass: lookalike replace worked!");
                             msg = onlyReplace;
@@ -5529,9 +5531,9 @@ z-index: 999999;
                             const UNICODE_RTL_OVERRIDE = '\u202e'
                             msg = ([UNICODE_RTL_OVERRIDE,].concat(reverseString(msg).split(""))).join("");
                         };
-                    };  
+                    };
                 };
-                
+
                 if (extract("tallChat") && !(msg.includes("᥊"))) {
                     msg = msg + "᥊";
                 };
@@ -5732,7 +5734,7 @@ z-index: 999999;
                     ];
 
                     createVarDataPopup(vardataButtonsInfo);
-    
+
                     return;
                 };
             };
@@ -5775,7 +5777,7 @@ z-index: 999999;
                 match = new RegExp(`,setTimeout\\(\\(\\(\\)=>\\{([=A-z0-9\\(\\),\\{ \\.;!\\|\\?:\\}]+send\\([a-zA-Z$_]+\\))`).exec(js);
                 log("PAUSE:", match);
                 H.PAUSE = match ? `function(){${match[1]}}` : "function(){log('no pause womp womp')}";
-    
+
                 const variableNameRegex = /^[a-zA-Z0-9_$\[\]"\\]*$/;
                 for (let name in H) {
                     let deobf = H[name];
@@ -5788,9 +5790,9 @@ z-index: 999999;
                         crashplease = "balls2";
                     };
                 };
-    
+
                 log('%cSTATEFARM INJECTION STAGE 1: GATHER VARS', 'color: yellow; font-weight: bold; font-size: 1.2em; text-decoration: underline;');
-    
+
                 const modifyJS = function (find, replace) {
                     let oldJS = js;
                     try {
@@ -5804,9 +5806,9 @@ z-index: 999999;
                         log("%cReplacement failed! Attempted to replace " + find + " with: " + replace, 'color: red; font-weight: bold; font-size: 0.6em; text-decoration: italic;');
                     };
                 };
-    
+
                 const f = function (varName) { return varName.replace("$", "\\$") };
-    
+
                 log('%cSTATEFARM INJECTION STAGE 2: INJECT VAR RETRIEVAL FUNCTION AND MAIN LOOP', 'color: yellow; font-weight: bold; font-size: 1.2em; text-decoration: underline;');
                 //hook for main loop function in render loop
                 modifyJS(f(H.SCENE) + '.' + f(H.render), `window["${functionNames.retrieveFunctions}"]({${injectionString}},true)||${f(H.SCENE)}.render`);
@@ -5868,7 +5870,7 @@ z-index: 999999;
                 modifyJS('5:10', functionNames.quickRespawn + '(5):' + functionNames.adBlocker + '(10)');
                 modifyJS(',3e3),console.log', `,window.${functionNames.quickRespawn}(3e3)),console.log`);
                 // modifyJS(H.respawnTime+'=Math.max',H.respawnTime+'=Math.min');
-    
+
                 //Modifies matchmaker JS to block gamecodes.
                 match = js.match(/region,([a-zA-Z$_]+)\(([a-zA-Z$_]+)/); //im so sorry i thought i was slick
                 if (match) {
@@ -5888,9 +5890,9 @@ z-index: 999999;
                 modifyJS(`"transparent")},`, `"transparent");window.${functionNames.interceptDrawTextOnNameTexture}(${H.nameTexture}, arguments, this.${H.player_})},`);
                 //intercept signedIn function
                 modifyJS(`if(this.isAnonymous`, `window.${functionNames.interceptSignedIn}(arguments);if(this.isAnonymous`);
-    
+
                 modifyJS(`="SPACE",`,`="SPACE",window.${functionNames.shouldInputSpace}()&&`)
-    
+
                 modifyJS(/tp-/g, '');
                 modifyJS(`window.location.href="https://free`, `let ballsack="https://free`);
 
@@ -5901,7 +5903,7 @@ z-index: 999999;
                 log("COLLIDER", match);
                 modifyJS(match[0], match[0] + "var iterations=0;");
                 modifyJS(">=0);){", ">=0);){iterations++;if (iterations >= 1e3) {console.log('oops lol');return false};")
-    
+
                 //intercept updateParticles for particle speed control
                 //deobf is: updateParticles(manager, delta)
                 match = js.match(/function [a-zA-Z$_]+\([a-zA-Z$_]+,[a-zA-Z$_]+\)\{for\(var [a-zA-Z$_]+=0;[a-zA-Z$_]+<[a-zA-Z$_]+\.sprites/); //this should only give one match.
@@ -5911,10 +5913,10 @@ z-index: 999999;
                   +`${delta}=${delta}*window.${functionNames.getParticleSpeedMultiplier}();` //get mutiplier value for delta.
                   +splitted[1]
                 )
-    
+
                 log(H);
                 log(js);
-    
+
                 attemptedInjection = true;
                 return js;
             } catch (error) {
@@ -6830,7 +6832,7 @@ z-index: 999999;
 
                 // //eye level
                 crosshairsPosition.y += 0.4;
-                const forwardOffset = -5; 
+                const forwardOffset = -5;
                 const yaw = ss.MYPLAYER[H.yaw];
                 const pitch = -ss.MYPLAYER[H.pitch];
                 const forwardX = Math.sin(yaw) * Math.cos(pitch);
@@ -6943,7 +6945,7 @@ z-index: 999999;
                             };
                         };
                         onlinePlayersArray.push([player, player.name, player.team]);
-                        
+
                         player[H.actor].setupNameSprite = (()=>{
                             setupNameSpriteNew(player[H.actor])
                         });
@@ -6960,17 +6962,17 @@ z-index: 999999;
                             score: player.score,
                             totalDeaths: player.totalDeaths,
                             bestGameStreak: player.bestGameStreak,
-    
+
                             team: player.team,
-    
+
                             hp: player[H.hp],
                             hardBoiledValue: player.hardBoiledValue,
 
                             shouldReplace: extract("nametagInfo"), //replace with the extract l8r
                         };
-    
+
                         let playerInfoOld = playerInfoCache[player.uniqueId];
-    
+
                         if ((playerInfoOld) && (
                             (playerInfo.shouldReplace != playerInfoOld.shouldReplace) || ((playerInfo.shouldReplace) && (
                                 (playerInfo.score != playerInfoOld.score) ||
@@ -6983,11 +6985,11 @@ z-index: 999999;
                         )) {
                             player[H.actor].setupNameSprite();
                         };
-    
+
                         playerInfoCache[player.uniqueId] = playerInfo;
 
                         if (player[H.actor]?.nameSprite?.color) {
-                            playerInfo.shouldReplace ? 
+                            playerInfo.shouldReplace ?
                                 (player[H.actor].nameSprite.color = ss.teamColors.textColor[0]) :
                                 (player[H.actor].nameSprite.color = ss.teamColors.textColor[player.team]);
                         }
@@ -7223,7 +7225,7 @@ z-index: 999999;
             const delta2 = Date.now()-lastRandomSkyBoxChangeTime;
             const desire = extract("randomSkyBoxInterval")? extract("randomSkyBoxInterval")*60*1000 : -1; //stored in minutes, so *60 -> seconds *1000 -> milliseconds.
             if(
-                extract("randomSkyBox") 
+                extract("randomSkyBox")
                 &&delta2!=-1
                 &&delta2>desire
             ){
@@ -7518,13 +7520,13 @@ z-index: 999999;
                     const valueToUse = (
                         (targetType == "nearest" && (
                             player.adjustedDistance
-                        )) || 
+                        )) ||
                         (targetType == "pointingat" && (
                             player.angleDiff
-                        )) || 
+                        )) ||
                         (targetType == "lowestHp" && (
                             player[H.hp]
-                        )) || 
+                        )) ||
                         (targetType == "mostKills" && (
                             -player.score
                         ))
