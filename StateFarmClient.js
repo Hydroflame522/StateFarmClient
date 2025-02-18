@@ -35,7 +35,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.4.2-pre1
+// @version      3.4.2-pre3
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.shell.onlypuppy7.online/*
@@ -266,6 +266,16 @@ let attemptedInjection = false;
                         <div class="tab-content ss_paddingright ss_paddingleft">
                             <div class="news-container f_col v_scroll" style="height: 20em; overflow-y: auto;">
                     `;
+
+                    let disablePlayButton = vueApp.disablePlayButton;
+                    vueApp.disablePlayButton = (isDisabled) => {
+                      console.log('called disablePlayButton, so we are handling the statefarm updates box')
+
+                      if (isDisabled) commitHistoryBox.style.display = 'none';
+                      else commitHistoryBox.style.display = '';
+
+                      return disablePlayButton(isDisabled);
+                    }
 
                     fetch(commitFeedURL).then(response => {
                         if (response.ok) return response.json();
@@ -769,7 +779,7 @@ let attemptedInjection = false;
             //enable acts like an AND operator,
             //whereas having conditions for the opposite allows for an OR operation.
             //it is messy, but hey it works lmao?
-            disableConditions: (module.disableConditions || false), 
+            disableConditions: (module.disableConditions || false),
         };
 
         if (!(module.slider && module.slider.step)) { module.slider = {} };
