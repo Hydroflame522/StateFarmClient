@@ -35,7 +35,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.4.2-pre1
+// @version      3.4.2-pre2
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.shell.onlypuppy7.online/*
@@ -1138,6 +1138,7 @@ sniping and someone sneaks up on you
             tp.chatTab.pages[0].addSeparator();
             initFolder({ location: tp.chatTab.pages[0], title: "Trolling", storeAs: "trollingFolder", });
                 initModule({ location: tp.trollingFolder, title: "Mock", storeAs: "mockMode", tooltip: "Rudely mocks people talking in chat", bindLocation: tp.chatTab.pages[1], });
+                initModule({ location: tp.trollingFolder, title: "Mock no repeat", storeAs: "mockModeNoRePeat", tooltip: "Makes mock not respond if it doesn't have an answer, instead of copying the message", bindLocation: tp.chatTab.pages[1], });
                 initModule({ location: tp.trollingFolder, title: "Announcer", storeAs: "announcer", tooltip: "Announces when you change GUI config", bindLocation: tp.chatTab.pages[1], });
                 tp.trollingFolder.addSeparator();
                 initModule({ location: tp.trollingFolder, title: "AutoEZ", storeAs: "autoEZ", tooltip: "Gloats on people when you kill them", bindLocation: tp.chatTab.pages[1], });
@@ -3949,7 +3950,7 @@ z-index: 999999;
                 let textAfterLastColon = document.getElementById("chatOut").children[document.getElementById("chatOut").children.length - 1].children[1].textContent;
                 let chatName = document.getElementById("chatOut").children[document.getElementById("chatOut").children.length - 1].children[0].textContent.slice(0, -2);
                 // log("Chat Name:", chatName);
-                if (chatName && chatName !== username && textAfterLastColon !== "joined." && textAfterLastColon !== "left." && !handleChat(textAfterLastColon)) {
+                if (chatName && chatName !== username && textAfterLastColon !== "joined." && textAfterLastColon !== "left." && !handleChat(textAfterLastColon) && !extract("mockModeNoRePeat")) {
                     sendChatMessage(textAfterLastColon);
                 }; //mockMode, this will copy and send the chat into message when joining, but doesn't show to other players, so it's fine. solvable with an if statement bool
             };
