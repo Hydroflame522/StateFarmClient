@@ -1,3 +1,17 @@
+<!-- these are links, they'll autoupdate thru the readme -->
+
+<!-- __GSF_LINKS_START__ -->
+[discord]: https://discord.gg/xgJcFVGsqB
+[greasyfork]: https://greasyfork.org/scripts/482982
+[terms]: https://docs.google.com/document/d/18A226mG4kVyd-BoNSxXxoXOuhwtm9M3CFwTaFf0-sZU/edit?usp=sharing
+
+[repo]: https://github.com/Hydroflame522/StateFarmClient
+[raw]: https://github.com/Hydroflame522/StateFarmClient/raw/main/StateFarmClient.js
+[license]:  https://github.com/Hydroflame522/StateFarmClient/blob/main/LICENSE.md
+
+[liberty]: https://github.com/onlypuppy7/LibertyMutualShellShockers
+<!-- __GSF_LINKS_END__ -->
+
 <div align='center'>﻿<img src='https://github.com/Hydroflame522/StateFarmClient/blob/main/assets/sfc%20banner/shell%20logo%20(transparent%20for%20white%20backgrounds).png?raw=true' width='80%'></div>
 <h1 align='center'>StateFarm Client</h1>
 <h3 align='center'>for Shell Shockers</h3>
@@ -5,21 +19,25 @@
 
 <div align='center'>
 
-[![Greasyfork Installs](https://shields.io/greasyfork/dt/482982?style=for-the-badge&labelColor=black&logo=greasyfork&color=e61005)](https://greasyfork.org/en/scripts/482982-statefarm-client-v3-combat-bloom-esp-rendering-chat-automation-botting-unbanning-and-more)
-[![Current Version](https://shields.io/greasyfork/v/482982?style=for-the-badge&label=version&labelColor=black&color=8507f2)](https://github.com/Hydroflame522/StateFarmClient/raw/main/StateFarmClient.js)
-[![Discord Members](https://shields.io/discord/1351719903781978142?style=for-the-badge&label=discord&logo=discord&labelColor=black&color=5865F2)](https://discord.gg/xgJcFVGsqB)
+[![Greasyfork Installs](https://shields.io/greasyfork/dt/482982?style=for-the-badge&labelColor=black&logo=greasyfork&color=e61005)][greasyfork]
+[![Current Version](https://shields.io/greasyfork/v/482982?style=for-the-badge&label=version&labelColor=black&color=8507f2)][raw]
+[![Discord Members](https://shields.io/discord/1351719903781978142?style=for-the-badge&label=discord&logo=discord&labelColor=black&color=5865F2)][discord]
 
 </div>
 
-## This mod is intended for educational purposes only. Any abuse or misuse of the mod is solely the user's responsibility. By downloading, intalling, or using the mod, you agree to our [Terms and Disclaimers](https://docs.google.com/document/d/18A226mG4kVyd-BoNSxXxoXOuhwtm9M3CFwTaFf0-sZU/edit?usp=sharing).
+## This mod is intended for educational purposes only. Any abuse or misuse of the mod is solely the user's responsibility. By downloading, intalling, or using the mod, you agree to our [Terms and Disclaimers][terms].
 <br>
 
 StateFarm is the **BEST** utility mod for Shell Shockers (shellshock.io), including **Aimbot**, **ESP**, **Bloom Mods**, **Botting**, **Custom Binding**, **Highly Customisable Modules**, **Chat Mods** and so much more!<br>
 
-> StateFarm Client V3 is based off [LibertyMutual Client](https://github.com/onlypuppy7/LibertyMutualShellShockers) <br>
+> StateFarm Client V3 is based off [LibertyMutual Client][liberty] <br>
 > This is a simpler template client, intended to be a base for StateFarm but anyone is welcome to use it in their own projects. <br>
 
-<h3 align='center'>Join our <a href='https://discord.gg/xgJcFVGsqB'>Discord Server</a> for the latest news!</h3>
+<div align='center'>
+
+### Join our [Discord Server][discord] for the latest news!</h3>
+
+</div>
 <br>
 
 The information below is accurate as of StateFarm version **3.4.1-pre147**. 
@@ -62,10 +80,10 @@ The information below is accurate as of StateFarm version **3.4.1-pre147**.
 <br>
    
 # [](#download-sources)Download Sources:
-- [GitHub](https://github.com/Hydroflame522/StateFarmClient)<br>
+- [GitHub][repo]<br>
 ![Current Version](https://shields.io/greasyfork/v/482982?style=for-the-badge&label=version&labelColor=black&color=8507f2)
 
-- [GreasyFork](https://greasyfork.org/scripts/482982)<br>
+- [GreasyFork][greasyfork]<br>
 ![Greasyfork Installs](https://shields.io/greasyfork/dt/482982?style=for-the-badge&labelColor=black&logo=greasyfork&color=e61005)
 
 <br>
@@ -77,12 +95,13 @@ Before you can install the client, there are a few things you must set up to be 
 1. Install Violentmonkey from [https://violentmonkey.github.io/get-it/](https://violentmonkey.github.io/get-it/) or any other userscript manager. (**DO NOT** use Tampermonkey unless no other option available!)
 
 3. Open the Violentmonkey dashboard. 
-4. Visit the [GreasyFork](https://greasyfork.org/scripts/482982) page & click `Install this script`.
-    - Alternatively, use the raw version from [Github](https://github.com/Hydroflame522/StateFarmClient/raw/main/StateFarmClient.js).
+4. Visit the [GreasyFork][greasyfork] page & click `Install this script`.
+    - Alternatively, use the raw version from [Github][raw].
 5. Visit [https://shellshock.io](https://shellshock.io/) (or another Shell Shockers link), & use StateFarm!
 
 <br>
 
+<!-- __GSF_TUTORIAL_START__ -->
 # [](#getting-started)Getting Started:
 > You just installed Statefarm Client...and you're probably confused by all the tabs, sliders, & buttons.
 > Below is a few basic ways to start using StateFarm.
@@ -133,7 +152,7 @@ There are a number of badges available, and they do stack. Anyone can get the ba
 ### Available Badges:
 
 - Gold StateFarm: For developers.
-- Silver StateFarm: For active server boosters ([our discord](https://statefarm.onlypuppy7.online)).
+- Silver StateFarm: For active server boosters ([our discord][discord]).
 - Bronze StateFarm: For previous server boosters and other things such as prize winners.
 - Basic StateFarm: Adding "sfc" to your username.
 - FBI: For Eggforcers.
@@ -442,6 +461,7 @@ Various account management tools
 1. Install [uBlock Origin](https://ublockorigin.com/) - the best blocker.
     - **uBlock Origin** is NOT **uBlock**. They are **different**.
 2. Enable uBlock Origin. That's it. No more ads.
+<!-- __GSF_TUTORIAL_END__ -->
 
 <br>
 
@@ -452,7 +472,7 @@ Various account management tools
 |Stuck on loading screen|Press CTRL+F5 (or FN+F5) until "Script Injected" is shown.|
 |Skin mods not working|This feature is only clientsided and will not show your skins to other players.|
 
-> If you have any issues, contact us in our [Discord server](https://dsc.gg/sfnetwork).
+> If you have any issues, contact us in our [Discord server][discord].
 
 <br>
 
@@ -468,7 +488,7 @@ Various account management tools
 <!-- you just need to watch an ad before you can get credited in the readme. -->
 <br>
 
-Statefarm Client is licensed under the **GNU General Public License v3.0** (GPL-3.0). This means you are free to use, modify, and distribute the UserScript, provided that you comply with the terms of the GPL-3.0. For more details, please refer to the full license text available [here]( https://github.com/Hydroflame522/StateFarmClient/blob/main/LICENSE.md).
+Statefarm Client is licensed under the **GNU General Public License v3.0** (GPL-3.0). This means you are free to use, modify, and distribute the UserScript, provided that you comply with the terms of the GPL-3.0. For more details, please refer to the full license text available [here][license].
 
 
 **Disclaimer**: The StateFarm Client Development Team will **not** take any responsibility for negative repercussions caused by the user misusing the client. It is the user's responsibility to ensure it is used properly.
