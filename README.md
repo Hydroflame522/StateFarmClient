@@ -96,14 +96,14 @@ Before you can install the client, there are a few things you must set up to be 
 
 3. Open the Violentmonkey dashboard. 
 4. Visit the [GreasyFork][greasyfork] page & click `Install this script`.
-    - Alternatively, use the raw version from [Github][raw].
+    - Alternatively, use the raw version from [GitHub][raw].
 5. Visit [https://shellshock.io](https://shellshock.io/) (or another Shell Shockers link), & use StateFarm!
 
 <br>
 
 <!-- __GSF_TUTORIAL_START__ -->
 # [](#getting-started)Getting Started:
-> You just installed Statefarm Client...and you're probably confused by all the tabs, sliders, & buttons.
+> You just installed StateFarm Client...and you're probably confused by all the tabs, sliders, & buttons.
 > Below is a few basic ways to start using StateFarm.
 
 - Press **H** to show/hide the panel. You can also drag it by clicking & dragging `StateFarm` at the top.
@@ -479,8 +479,8 @@ Various account management tools
 # [](#credits-and-disclaimer)Credits and Disclaimer:
 
  - **Hydroflame521** - for founding the project.
- - **onlypuppy7** - for leading developement.
- - **porcupane**, **not_food** , **de_Neuublue**, **OakSwingZZZ**, **1ust** , **Seq** for code contributions & developement.
+ - **onlypuppy7** - for leading development.
+ - **porcupane**, **not_food** , **de_Neuublue**, **OakSwingZZZ**, **1ust** , **Seq** for code contributions & development.
  - **susdung**, **portending** - for updating and maintaining the readme.
  - **gus/yk0_0** - for some skyboxes used in StateFarm Client.
 <!-- **Zertalious** - old code in old versions. -->
@@ -488,7 +488,7 @@ Various account management tools
 <!-- you just need to watch an ad before you can get credited in the readme. -->
 <br>
 
-Statefarm Client is licensed under the **GNU General Public License v3.0** (GPL-3.0). This means you are free to use, modify, and distribute the UserScript, provided that you comply with the terms of the GPL-3.0. For more details, please refer to the full license text available [here][license].
+StateFarm Client is licensed under the **GNU General Public License v3.0** (GPL-3.0). This means you are free to use, modify, and distribute the UserScript, provided that you comply with the terms of the GPL-3.0. For more details, please refer to the full license text available [here][license].
 
 
 **Disclaimer**: The StateFarm Client Development Team will **not** take any responsibility for negative repercussions caused by the user misusing the client. It is the user's responsibility to ensure it is used properly.
