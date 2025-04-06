@@ -35,7 +35,7 @@ StateFarm is the **BEST** utility mod for Shell Shockers (shellshock.io), includ
 
 <div align='center'>
 
-### Join our [Discord Server][discord] for the latest news!</h3>
+### Join our [Discord Server][discord] for the latest news!
 
 </div>
 <br>
