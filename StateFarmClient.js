@@ -6364,7 +6364,7 @@ modifyJS(`:{}};if(${H.playerData}.`, `:{}};window.${functionNames.realPlayerData
                 } catch { }
                 */
 
-                modifyJS(/,function\(\)\{const ([a-zA-Z$_]+)="#######"(.*?)\}\(\)/g, '')
+                modifyJS(/,function\(\)\{const ([a-zA-Z$_]+)="(.*?)\}\(\)/g, '')
 
                 log(H);
                 log(js);
