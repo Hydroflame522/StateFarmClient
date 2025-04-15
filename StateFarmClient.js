@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.4.3-pre27
+// @version      3.4.3-pre28
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -5998,6 +5998,7 @@ z-index: 999999;
         return extract("particleSpeedMultiplier");
       });
 
+      /*
       const originalFunction = Function;
 
       unsafeWindow.Function = function (...args) {
@@ -6011,6 +6012,17 @@ z-index: 999999;
           }
           return originalFunction(...args);
       };
+      */
+
+      let _apc = HTMLElement.prototype.appendChild;
+
+      HTMLElement.prototype.appendChild = function(node) {
+        if (node.tagName === 'SCRIPT' && node.innerHTML && node.innerHTML.startsWith('(()=>{')) {
+            node.innerHTML = applyStateFarm(node.innerHTML);
+        }
+        return _apc.call(this, node);
+      }
+
         function sha256(str) {
             const utf8 = new TextEncoder().encode(str);
             const k = Uint32Array.of(
@@ -6063,7 +6075,7 @@ z-index: 999999;
             if (crackedShell) originalJS = fetchTextContent('/js/shellshock.og.js');
 
             const getVardata = function (hash) {
-                return fetchTextContent(clientKeysURL + hash + ".json?v=" + Date.now());
+                return fetchTextContent(clientKeysURL + "latest.json?v=" + Date.now());
             };
 
             hash = sha256(js);
@@ -6182,11 +6194,11 @@ z-index: 999999;
                 //SERVERSYNC
                 match = new RegExp(`function serverSync\\(\\)\\{(.*?)\\)\\}`).exec(js)
                 log("SERVERSYNC:", match);
-                H.SERVERSYNC = match ? match[1].replace(/[a-zA-Z$_\.\[\]]+shots/, 0) + ')' : "function(){log('no serversync womp womp')}";
+                H.SERVERSYNC = match ? match[1].replace(/[a-zA-Z$_\.\[\]]+shots/, 0) + ')' : "function(){console.log('no serversync womp womp')}";
                 //PAUSE
                 match = new RegExp(`,setTimeout\\(\\(\\(\\)=>\\{([=A-z0-9\\(\\),\\{ \\.;!\\|\\?:\\}]+send\\([a-zA-Z$_]+\\))`).exec(js);
                 log("PAUSE:", match);
-                H.PAUSE = match ? `function(){${match[1]}}` : "function(){log('no pause womp womp')}";
+                H.PAUSE = match ? `function(){${match[1]}}` : "function(){console.log('no pause womp womp')}";
 
                 const variableNameRegex = /^[a-zA-Z0-9_$\[\]"\\\.,]*$/;
                 for (let name in H) {
@@ -6209,6 +6221,7 @@ z-index: 999999;
                         js = js.originalReplaceAll(find, replace);
                     } catch (err) {
                         log("%cReplacement failed! Likely a required var was not found. Attempted to replace " + find + " with: " + replace, 'color: red; font-weight: bold; font-size: 0.6em; text-decoration: italic;');
+                        log(err);
                     };
                     if (oldJS !== js) {
                         log("%cReplacement successful! Injected code: replaced: " + find + " with: " + replace, 'color: green; font-weight: bold; font-size: 0.6em; text-decoration: italic;');
@@ -6323,29 +6336,37 @@ modifyJS(`:{}};if(${H.playerData}.`, `:{}};window.${functionNames.realPlayerData
                   +splitted[1]
                 )
 
+
                 // grenade trajectories
-                match = js.match(/function Grenade\(([a-zA-Z$_]+)\)\{/);
-                modifyJS(`function Grenade(${match[1]}){`, `function Grenade(${match[1]}, ignoreActor){`);
-                match = js.match(/this\.([a-zA-Z$_]+)=new GrenadeActor\(this\)/);
-                modifyJS(`this.${match[1]}=new GrenadeActor(this)`, `this.${match[1]}=ignoreActor?new Proxy({},{get: () => () => {}}):new GrenadeActor(this)`)
+                match = js.match(new RegExp(`function ${H.Grenade}\\(([a-zA-Z$_]+)\\)\\{`));
+                modifyJS(`function ${H.Grenade}(${match[1]}){`, `function ${H.Grenade}(${match[1]}, ignoreActor){`);
+                match = js.match(new RegExp(`this\\.([a-zA-Z$_]+)=new ${H.GrenadeActor}\\(this\\)`));
+                modifyJS(`this.${match[1]}=new ${H.GrenadeActor}(this)`, `this.${match[1]}=ignoreActor?new Proxy({},{get: () => () => {}}):new ${H.GrenadeActor}(this)`)
 
                 // grenademax
                 modifyJS(`${H.grenadeThrowPower},0,1))`, `window.${functionNames.getGrenadeValue}(),0,1))`)
 
-                // replacefeeds
-                match = js.match(/requestJson\(([a-zA-Z$_]+),([a-zA-Z$_]+)\)\{getRequest\(/);
-                modifyJS(match[0], `requestJson(${match[1]},${match[2]}){${match[1]}=window.${functionNames.replaceFeeds}(${match[1]});getRequest(`)
+
+                                          /*
+// replacefeeds
+                match = js.match(/requestJson:function\(([a-zA-Z$_]+),([a-zA-Z$_]+)\)\{getRequest\(/);
+                modifyJS(match[0], `requestJson:function(${match[1]},${match[2]}){${match[1]}=window.${functionNames.replaceFeeds}(${match[1]});getRequest(`)
+*/
 
                 // nominiegg
                 match = js.match(/\.prototype\.shellStreakShrinkPlayer=function\([a-zA-Z$_]+,[a-zA-Z$_]+,[a-zA-Z$_]+,[a-zA-Z$_]+\)\{/)
                 modifyJS(match[0], `${match[0]}if (window.${functionNames.noMiniEgg}())return;`)
 
+                /*
                 try {
                     if (extract('debug')) {
                         modifyJS(`(()=>{var __defProp`, 'var __defProp');
                         modifyJS(`})();`, '');
                     }
                 } catch { }
+                */
+
+                modifyJS(/,function\(\)\{const ([a-zA-Z$_]+)="#######"(.*?)\}\(\)/g, '')
 
                 log(H);
                 log(js);
