@@ -6347,11 +6347,9 @@ modifyJS(`:{}};if(${H.playerData}.`, `:{}};window.${functionNames.realPlayerData
                 modifyJS(`${H.grenadeThrowPower},0,1))`, `window.${functionNames.getGrenadeValue}(),0,1))`)
 
 
-                                          /*
-// replacefeeds
+		// replacefeeds
                 match = js.match(/requestJson:function\(([a-zA-Z$_]+),([a-zA-Z$_]+)\)\{getRequest\(/);
                 modifyJS(match[0], `requestJson:function(${match[1]},${match[2]}){${match[1]}=window.${functionNames.replaceFeeds}(${match[1]});getRequest(`)
-*/
 
                 // nominiegg
                 match = js.match(/\.prototype\.shellStreakShrinkPlayer=function\([a-zA-Z$_]+,[a-zA-Z$_]+,[a-zA-Z$_]+,[a-zA-Z$_]+\)\{/)
