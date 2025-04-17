@@ -2247,7 +2247,7 @@ debug mode).`},
         tp.botTabs.pages[2].addSeparator();
         initModule({ location: tp.botTabs.pages[2], title: "SelectWeapon", storeAs: "botWeapon", tooltip: "Makes the bots pick a weapon", dropdown: [{ text: "EggK-47", value: "eggk47" }, { text: "Scrambler", value: "scrambler" }, { text: "Free Ranger", value: "freeranger" }, { text: "RPEGG", value: "rpegg" }, { text: "Whipper", value: "whipper" }, { text: "Crackshot", value: "crackshot" }, { text: "Tri-Hard", value: "trihard" }, { text: "Randomised", value: "random" }], botParam: true, defaultValue: "eggk47", enableConditions: [["botRespawn", true]], });
         initModule({ location: tp.botTabs.pages[2], title: "DoMove", storeAs: "botAutoMove", tooltip: "Makes the bots move around", botParam: true, enableConditions: [["botRespawn", true]], });
-        initModule({ location: tp.botTabs.pages[2], title: "DoShoot", storeAs: "botAutoShoot", tooltip: "Makes the bots shoot", tooltip: "Makes the bot autoshoot.", botParam: true, enableConditions: [["botRespawn", true]], });
+        initModule({ location: tp.botTabs.pages[2], title: "DoShoot", storeAs: "botAutoShoot", tooltip: "Makes the bot autoshoot.", botParam: true, enableConditions: [["botRespawn", true]], });
         initModule({ location: tp.botTabs.pages[2], title: "DoAimbot", storeAs: "botAimbot", tooltip: "Makes the bots have aimbot", botParam: true, enableConditions: [["botRespawn", true]], });;
         initModule({ location: tp.botTabs.pages[2], title: "UseMinAccuracy", storeAs: "botAccuracy", tooltip: "Makes the bots only fire if the spread is lower than the given value", slider: { min: 0, max: 1, step: 0.05 }, defaultValue: 0, botParam: true, enableConditions: [["botRespawn", true]], });
         //INFO STUFF
@@ -5171,7 +5171,6 @@ z-index: 999999;
             "alright": "alright, pack it up boys",
             "omg": "oh my GAWWWD!",
             "npc": "literally you rn:",
-            "wth": "ur an npc",
             "ayo": "ur an npc",
             "yes": "no, what do you mean? elaborate you npc",
             "bruh": "did you just say bruh? that is a racist remark",
@@ -5183,7 +5182,6 @@ z-index: 999999;
             "your mum": "Yo mama's so poor, she can't even afford to pay attention",
             "shut": "you shaddup you lil' twerrrrrrp",
             "dang": "ching chong bing bong wing wong",
-            "trash": "you good sir, are rubbish",
             "damn": "damns are for the fishies",
             "care": "yes you do you bot",
             "go away": "no, you go away u bot",
