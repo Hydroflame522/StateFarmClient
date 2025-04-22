@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.4.3-pre29
+// @version      3.4.3-pre30
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -119,6 +119,7 @@
 
 //various debug fun things
 const __DEBUG__ = {
+    avoidReload: false,
     doTraceLogging: false,
     forceTriggerVarData: false,
     preventConsoleBlock: false
@@ -3615,7 +3616,7 @@ z-index: 999999;
         }, 10000);
     };
     const reloadPage = function () {
-        unsafeWindow.location.reload(true);
+        if (!__DEBUG__.avoidReload) unsafeWindow.location.reload(true);
     };
     const spamReport = function () {
         (async function () {
@@ -6251,8 +6252,8 @@ z-index: 999999;
                 modifyJS(`${H.fov}=1.25`, 'fov=window.' + functionNames.fixCamera + '()');
                 modifyJS(`${H.fov}+(1.25`, 'fov+(window.' + functionNames.fixCamera + '()');
                 //chat mods: disable chat culling
-                const chatCull = /return\}[a-zA-Z$_]+\.length>4/.exec(js)[0];
-                modifyJS(chatCull, chatCull.originalReplace('4', `window.${functionNames.getChatLimit}()`));
+                const chatCull = /return\}[a-zA-Z$_]+\.length>4/.exec(js);
+                if (chatCull) modifyJS(chatCull[0], chatCull[0].originalReplace('4', `window.${functionNames.getChatLimit}()`));
                 //chat mods: disable filter (credit to A3+++ for this finding)
                 modifyJS(`!${f(H.isBadWord)}(${f(H._insideFilterFunction)})`, `((!${f(H.isBadWord)}(${f(H._insideFilterFunction)}))||window.${functionNames.getDisableChatFilter}())`);
                 //chat mods: make filtered text red
