@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.5.0
+// @version      3.5.1
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -110,7 +110,6 @@
 // @match        *://*.yolk.quest/*
 // @match        *://*.yolk.today/*
 // @match        *://*.zygote.cafe/*
-// @antifeature  membership
 // @downloadURL  https://sfc.best/js/sf.user.js
 // @updateURL    https://sfc.best/js/sf.meta.js
 // ==/UserScript==
@@ -235,7 +234,7 @@ let attemptedInjection = false;
         const wbg = importObj.wbg;
 
         let blockedCalls = ["sethref", "setInterval"];
-        let exceptions = ["SELF", "WINDOW", "GLOBAL_THIS", "GLOBAL", "is_undefined", "init_", "document", "createElement", "settextContent", "body", "instanceof_Window", "instanceof_HtmlCanvasElement", "nodeType", "_item_", "_textContent_", "_now_", "_closure_", "_string_", "_number_", "movementX", "movementY", "_new_", "addEventListener", "instanceof_HtmlElement", "_get_", "_set_"];
+        let exceptions = ["SELF", "WINDOW", "GLOBAL_THIS", "GLOBAL", "is_undefined", "init_", "document", "createElement", "settextContent", "body", "instanceof_Window", "instanceof_HtmlCanvasElement", "nodeType", "_item_", "_textContent_", "_now_", "_closure_", "_string_", "_number_", "movementX", "movementY", "_new_", "addEventListener", "instanceof_HtmlElement", "_get_", "_set_", "_cast_", "_wbindgenis", "_wbindgennumberget"];
 
         // https://stackoverflow.com/questions/2712136/how-do-i-make-this-loop-all-children-recursively
 
@@ -4921,7 +4920,7 @@ z-index: 999999;
                     <br>
                     <a href="${discordURL}">Discord&emsp;</a>
                     <a href="${baseURL}">Github&emsp;</a>
-                    <a href="${greasyforkURL}">Greasyfork&emsp;</a>
+                    <a href="https://sfc.best">Website&emsp;</a>
                     <a href="${youtubeURL}">YouTube</a>
                     <br>
                     <br>
