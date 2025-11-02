@@ -6593,8 +6593,9 @@ z-index: 999999;
                     };
                 };
 
-                const modifyJS = function (find, replace) {
+                const modifyJS = function (find, replace, do_convert_regex=false) {
                     let oldJS = js;
+					do_convert_regex && (find = new RegExp(find, 'g'));
                     try {
                         js = js.originalReplaceAll(find, replace);
                     } catch (err) {
@@ -6612,7 +6613,7 @@ z-index: 999999;
 
                 log('%cSTATEFARM INJECTION STAGE 2: INJECT VAR RETRIEVAL FUNCTION AND MAIN LOOP', 'color: yellow; font-weight: bold; font-size: 1.2em; text-decoration: underline;');
                 //hook for main loop function in render loop
-                modifyJS(f(H.SCENE) + '.' + f(H.render), `window["${functionNames.retrieveFunctions}"]({${injectionString}},true)||${f(H.SCENE)}.render`);
+                modifyJS(f(H.SCENE) + '.' + f(H.render), `window["${functionNames.retrieveFunctions}"]({${injectionString}},true)||${H.SCENE}.render`);
                 modifyJS('log("After Game Ready"),', `log("After Game Ready"),window["${functionNames.retrieveFunctions}"]({${injectionString}}),`);
                 log('%cSuccess! Variable retrieval and main loop hooked.', 'color: green; font-weight: bold;');
                 log('%cSTATEFARM INJECTION STAGE 3: INJECT CULL INHIBITION', 'color: yellow; font-weight: bold; font-size: 1.2em; text-decoration: underline;');
