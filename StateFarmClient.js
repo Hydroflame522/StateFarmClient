@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.5.2
+// @version      3.5.3
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -110,6 +110,7 @@
 // @match        *://*.yolk.quest/*
 // @match        *://*.yolk.today/*
 // @match        *://*.zygote.cafe/*
+// @antifeature  membership
 // @downloadURL  https://sfc.best/js/sf.user.js
 // @updateURL    https://sfc.best/js/sf.meta.js
 // ==/UserScript==
@@ -311,6 +312,10 @@ let attemptedInjection = false;
                     return item.length;
                 };
             },
+            'appendChild': function (parent, child) {
+                console.warn("Attempted to append", child, "to", parent);
+                parent.appendChild(child);
+            },
             // 'addEventListener': function(item, stringStart, stringLen, listener) {
             //     log("Hooked addEventListener", item, stringStart, stringLen, listener);
             //     item.addEventListener('pointermove', (...args) => {
@@ -318,10 +323,6 @@ let attemptedInjection = false;
             //         listener(...args);
             //     });
             // },
-            'appendChild': function (item, child) {
-                console.log(child.innerText);
-                item.appendChild(child);
-            },
             'innerText': () => {},
             '_has_': () => true,
             'isTrusted': () => true,
@@ -346,8 +347,8 @@ let attemptedInjection = false;
                 wbg[key] = function () {
                     log("Called", key);
                     log("Args", arguments);
-                    console.warn(`Called unpatched ${key}! Something probably broke. Args:`, arguments, "\nNot allowing passthrough!");
-                    // return wbg[key].apply(this, arguments);
+                    console.warn(`Called unpatched ${key}! Something probably broke. Args:`, arguments, "\nAllowing passthrough!");
+                    return wbg[key].apply(this, arguments);
                 };
             };
         };
@@ -4920,7 +4921,7 @@ z-index: 999999;
                     <br>
                     <a href="${discordURL}">Discord&emsp;</a>
                     <a href="${baseURL}">Github&emsp;</a>
-                    <a href="https://sfc.best">Website&emsp;</a>
+                    <a href="${greasyforkURL}">Greasyfork&emsp;</a>
                     <a href="${youtubeURL}">YouTube</a>
                     <br>
                     <br>
@@ -5311,7 +5312,7 @@ z-index: 999999;
             "imagine": "imagine who asked",
             "f u": "funny uncleburger",
             "gg": "good grief",
-            "shut up": "B͇͈͉͍͎̽̾̿̀́͂̓̈́͆͊͋͌͗ͅ͏͎͗͏͇͇̽̾̿̀́̽̿̀̀́̽̀͆̓̈́̓͋͌ͅ͏͌͏͎͉͗͗͌̓̓̓̓̓́̿",
+            "shut up": "B͇͈͉͍͎̽̾̿̀́͂̓̈́͆͊͋͌͗ͅ͏͎͗͏͇͇̽̾̿̀́̽̿̀̀́̽̀͆̓̈́̓͋͌ͅ͏͌͏͎͉͗͗͌̓̓̓̓̓́̿",
             "shush": "cant be bothered to be quiet",
             "nuh": "uh huh",
             "proof": "after looking at this proof, i can confidently say its 100% fake.",
@@ -6595,7 +6596,7 @@ z-index: 999999;
 
                 const modifyJS = function (find, replace, do_convert_regex=false) {
                     let oldJS = js;
-					do_convert_regex && (find = new RegExp(find, 'g'));
+                    do_convert_regex && (find = new RegExp(find, 'g'));
                     try {
                         js = js.originalReplaceAll(find, replace);
                     } catch (err) {
@@ -6613,7 +6614,8 @@ z-index: 999999;
 
                 log('%cSTATEFARM INJECTION STAGE 2: INJECT VAR RETRIEVAL FUNCTION AND MAIN LOOP', 'color: yellow; font-weight: bold; font-size: 1.2em; text-decoration: underline;');
                 //hook for main loop function in render loop
-                modifyJS(f(H.SCENE) + '.' + f(H.render), `window["${functionNames.retrieveFunctions}"]({${injectionString}},true)||${H.SCENE}.render`);
+                modifyJS(f(H.SCENE) + '.' + f(H.render), `window["${functionNames.retrieveFunctions}"]({${injectionString}},true)||${H.SCENE}.render`, true);
+
                 modifyJS('log("After Game Ready"),', `log("After Game Ready"),window["${functionNames.retrieveFunctions}"]({${injectionString}}),`);
                 log('%cSuccess! Variable retrieval and main loop hooked.', 'color: green; font-weight: bold;');
                 log('%cSTATEFARM INJECTION STAGE 3: INJECT CULL INHIBITION', 'color: yellow; font-weight: bold; font-size: 1.2em; text-decoration: underline;');
