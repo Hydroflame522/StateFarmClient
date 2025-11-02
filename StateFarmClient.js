@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.5.4
+// @version      3.5.5
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -384,7 +384,7 @@ let attemptedInjection = false;
     const scriptInfoURL = `https://greasyfork.org/scripts/${greasyforkID}.json`;
 
     //all of this git stuff assumes youve cloned the repo
-    const gitID = "Hydroflame521/StateFarmClient";
+    const gitID = "Hydroflame522/StateFarmClient";
     const gitType = "github"; // or "github"
 
     const baseURL = `https://${gitType}.com/${gitID}`;
