@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.5.3
+// @version      3.5.4
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -4194,7 +4194,7 @@ z-index: 999999;
                 GM_listValues,
                 GM_getValue,
                 GM_setValue,
-                crackedShell,
+                // crackedShell,
                 createPopup,
                 createPrompt,
                 remove,
@@ -5606,7 +5606,7 @@ z-index: 999999;
         changeByMovement: (x = 0, y = 0) => {
             // yawpitch.setMouseParams();
 
-            log("Changing yaw and pitch by movement:", x, y);
+            // log("Changing yaw and pitch by movement:", x, y);
 
             let mouseSpeed = ss.SETTINGS.mouseSpeed ? Number(ss.SETTINGS.mouseSpeed) : 50;
             let mouseInvert = ss.SETTINGS.mouseInvert ? Number(ss.SETTINGS.mouseInvert) : 0;
