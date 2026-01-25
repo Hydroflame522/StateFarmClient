@@ -128,7 +128,7 @@ There are a number of badges available, and they do stack. Anyone can get the ba
 ### Available Badges:
 
 - Gold StateFarm: For developers.
-- Silver StateFarm: For active server boosters ([our discord](https://statefarm.onlypuppy7.online)).
+- Silver StateFarm: For active server boosters ([our discord](https://sfc.best/discord)).
 - Bronze StateFarm: For previous server boosters and other things such as prize winners.
 - Basic StateFarm: Adding "sfc" to your username.
 - FBI: For Eggforcers.
