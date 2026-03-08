@@ -447,7 +447,7 @@ Solution: Press CTRL+F5 (or FN+F5) until "Script Injected" is shown.
 Issue: Skin mods not working
 Solution: This feature is only clientsided and will not show your skins to other players.
 
-> If you have any issues, contact us in our [Discord server](https://dsc.gg/sfnetwork).
+> If you have any issues, contact us in our [Discord server](https://sfc.best/discord).
 
 <br>
 
