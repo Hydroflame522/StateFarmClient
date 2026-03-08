@@ -15,7 +15,7 @@
 [liberty]: https://github.com/onlypuppy7/LibertyMutualShellShockers
 <!-- __SFC_LINKS_END__ -->
 
-### Important information regarding the current availability of StateFarm Client and it's Discord
+### Important information regarding the current availability of StateFarm Client and its Discord
 
 > [!TIP]
 > Make sure to bookmark our website, as it's our uncensored home for news and installs: [sfc.best][site]
