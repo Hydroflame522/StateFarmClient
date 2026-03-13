@@ -373,7 +373,7 @@ let attemptedInjection = false;
     const menuTitle = name + " v" + version;
 
     //INIT WEBSITE LINKS: store them here so they are easy to maintain and update!
-    const discordURL = "https://sfc.best/discord";
+    const discordURL = "https://dsc.gg/sfnetwork";
     const discordName = "Farmer's Workers' Union";
     const greasyforkID = "482982";
     const youtubeURL = "https://www.youtube.com/@StateFarmClientV3";
