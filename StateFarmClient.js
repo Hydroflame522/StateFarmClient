@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.5.5
+// @version      3.5.6
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -6676,6 +6676,9 @@ z-index: 999999;
                 //instant spectate
                 modifyJS(`\{${H.enterSpectatorModeBlocked}\|\|`,`\{(window["${functionNames.getInstantSpectateEnterSpectatorModeBlocked}"](${H.enterSpectatorModeBlocked}))\|\|`);
                 modifyJS(`\),${H.respawnTime}<0&&`,`\),(window["${functionNames.getInstantSpectateRespawnTime}"](${H.respawnTime}))&&`);
+
+				match = js.match(/onesignal-bell-container"\);([a-zA-Z$_]+)=/);
+				if (match) modifyJS(`getElementById("onesignal-bell-container");${match[1]}=Date.now()`, `getElementById("onesignal-bell-container");${match[1]}=0`);
 
                 //Modifies matchmaker JS to block gamecodes.
                 match = js.match(/region,([a-zA-Z$_]+)\(([a-zA-Z$_]+)/); //im so sorry i thought i was slick
