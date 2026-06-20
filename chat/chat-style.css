@@ -1,0 +1,89 @@
+:root {
+    overflow-y: hidden;
+}
+.message{
+    padding:0%;
+    padding-bottom: 5px;
+    
+}
+#chat {
+    margin-top: 35px;
+    padding:5px;
+    max-height: calc(100vh - 41px - 50px - 10px);
+    overflow-y: auto;
+    max-width: 95vw;
+    overflow-x: hidden;
+    text-wrap:wrap;    
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #333;
+    overflow-x: hidden;
+    padding: 0px;
+    color: #d5d5d5;
+}
+table {
+    width:100%;
+}
+tr {
+    padding-top: .5vh;
+}
+input#messageInput {
+    margin:0;
+    position: absolute;
+    padding: 3px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 15%;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    font-size: large;
+    max-height: 50px;
+    background-color: #444;
+    border-style: none;
+    outline: none;
+    color:#d5d5d5;
+}
+
+.name {
+    font-weight: 600;
+}
+.my-name{
+    font-weight:700;
+}
+header {
+    background-color: #444;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 93vw;
+    padding: 11px;
+    max-height: 41px;
+    padding-left: 3.5vw;
+    padding-right: 3.5vw;
+}
+.status {font-size: medium; float: left;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;}
+.serverMessage {
+    display: table;
+    margin: 0 auto;
+    font-weight: 600;
+    font-size: .9rem;
+}
+.serverMessageError {
+    color:#d58080;
+}
+.serverMessageSuccess {
+    color:#79ff9f;
+}
+.hidden {
+    color: #929292;
+}
+.mc {
+    color:#ff6868;
+}
+.dc {
+    color:#68acff;
+}

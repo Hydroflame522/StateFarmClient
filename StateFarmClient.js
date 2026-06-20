@@ -32,7 +32,7 @@
     //3.#.#-release for release (in the unlikely event that happens)
 // this ensures that each version of the script is counted as different
 
-// @version      3.5.6
+// @version      3.5.7
 
 // @match        *://*.shellshock.io/*
 // @match        *://*.algebra.best/*
@@ -436,7 +436,7 @@ let attemptedInjection = false;
     //misc: statefarm external services
     const factoryURL = 'https://factory.getstate.farm/api/account?key=';
     const clientKeysURL = `https://raw.githubusercontent.com/StateFarmNetwork/client-keys/refs/heads/main/statefarm_`;
-    const sfChatURL = `https://raw.githack.com/OakSwingZZZ/StateFarmChatFiles/main/index.html`;
+    const sfChatURL = `https://raw.githack.com/${gitID}}/main/chat/index.html`;
 
     //misc: non sfc external things
     const babylonURL = `https://cdn.jsdelivr.net/npm/babylonjs@{0}/babylon.min.js`;
