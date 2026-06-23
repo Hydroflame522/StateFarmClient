@@ -100,7 +100,7 @@ function main() {
       let status = document.getElementById('status-div');
       if(status.getElementsByClassName("authed").length == 0){
         let auth = document.createElement('span');
-        auth.innerHTML = "Authenticated."
+        auth.innerText = "Authenticated."
         auth.style.paddingLeft = '2vw';
         auth.classList.add('serverMessageSuccess');//Can't be bothered XD
         auth.classList.add('authed'); 
@@ -166,11 +166,11 @@ function main() {
     }
     if (message.mc) {
       name.classList.add("mc");
-      name.innerHTML += message.mcP;
+      name.innerText += message.mcP;
     }
     if (message.dc) {
       name.classList.add("dc");
-      name.innerHTML += message.dcP;
+      name.innerText += message.dcP;
     }
     name.setAttribute("chat-user", JSON.stringify(message.user));
     name.addEventListener("click", (e) => {
@@ -183,11 +183,11 @@ function main() {
         }
       }
     });
-    name.innerHTML += message.user.name + ": ";
+    name.innerText += message.user.name + ": ";
     container.appendChild(name);
 
     let chatText = document.createElement("span");
-    chatText.innerHTML = message.message;
+    chatText.innerText = message.message;
     chatText.classList.add("message-text");
     if (message.notPublic == true) {
       chatText.classList.add("hidden");
@@ -212,7 +212,7 @@ function main() {
     container.classList.add("message");
     let serverMessage = document.createElement("span");
     serverMessage.classList.add("serverMessage");
-    serverMessage.innerHTML = message.feedback;
+    serverMessage.innerText = message.feedback;
     if (message.isError == true) {
       serverMessage.classList.add("serverMessageError");
     } else if (message.isError == "success") {
