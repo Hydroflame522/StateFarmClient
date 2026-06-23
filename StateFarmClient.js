@@ -419,8 +419,8 @@ let attemptedInjection = false;
     const replacementLogoChristmasURL = `${cdnBase}/icons/shell-logo-replacement-christmas.png`;
     const replacementLogoNewYearsURL = `${cdnBase}/icons/shell-logo-replacement-new-years.png`;
 
-    const replacementFeedURL = `${rawBase}/ingamefeeds/`;
-    const badgeListURL = `${cdnBase}/ingamebadges/`;
+    const replacementFeedURL = `${rawBase}/feeds/`;
+    const badgeListURL = `${cdnBase}/badges/`;
     const iconURL = `${cdnBase}/icons/StateFarmClientLogo384px.png`;
     const itsOverURL = `${cdnBase}/assets/its%20over/ItsOver4Smaller_.png`;
     const eggShowURL = `${cdnBase}/assets/show/EggShowSmaller_.png`;
