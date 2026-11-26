@@ -3,7 +3,7 @@
 // @description  Shell Shockers Aimbot & ESP of the highest level. Best shellshock.io menu in 2025 with NO ADS! Many cheats such as Aimbot, PlayerESP, AmmoESP, Chams, Nametags, Join/Leave alerts, Chat Filter Bypass, AntiAFK, FOV Slider, Zooming, Player Stats, Auto Reload, Auto Unban and many more whilst having unsurpassed customisation options such as binding to any key, easily editable color scheme and themes - all on the fly!
 // @author       Hydroflame521, enbyte, notfood, 1ust, OakSwingZZZ, Seq and de_Neuublue
 // @namespace    https://github.com/Hydroflame522/StateFarmClient/
-// @supportURL   https://github.com/Hydroflame522/StateFarmClient/-/issues/
+// @supportURL   https://github.com/Hydroflame522/StateFarmClient/issues/
 // @license      GPL-3.0
 // @run-at       document-start
 
